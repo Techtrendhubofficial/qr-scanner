@@ -4,6 +4,7 @@ const STORAGE_KEYS = {
   HISTORY: 'scancraft_history_v1',
   SUBSCRIPTION: 'scancraft_subscription_v1',
   SETTINGS: 'scancraft_settings_v1',
+  STRIPE_LINK: 'scancraft_stripe_link_v1',
 };
 
 const DEFAULT_SETTINGS: ScannerSettings = {
@@ -157,3 +158,20 @@ export function saveStoredSettings(settings: ScannerSettings): void {
     console.error('Failed to save settings:', e);
   }
 }
+
+export function getStoredStripeLink(): string {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.STRIPE_LINK) || '';
+  } catch {
+    return '';
+  }
+}
+
+export function saveStoredStripeLink(link: string): void {
+  try {
+    localStorage.setItem(STORAGE_KEYS.STRIPE_LINK, link.trim());
+  } catch (e) {
+    console.error('Failed to save Stripe link:', e);
+  }
+}
+

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import {
   X,
@@ -13,8 +13,11 @@ import {
   Key,
   Flame,
   CheckCircle2,
+  ExternalLink,
+  Settings,
 } from 'lucide-react';
 import { SubscriptionState } from '../../types';
+import { getStoredStripeLink, saveStoredStripeLink } from '../../utils/storage';
 
 interface PricingModalProps {
   isOpen: boolean;
@@ -35,6 +38,19 @@ export const PricingModal: React.FC<PricingModalProps> = ({
   const [showPlaySheet, setShowPlaySheet] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // Stripe Link Management
+  const [stripeLink, setStripeLink] = useState('');
+  const [showStripeInput, setShowStripeInput] = useState(false);
+  const [stripeInputVal, setStripeInputVal] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      const saved = getStoredStripeLink();
+      setStripeLink(saved);
+      setStripeInputVal(saved);
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const triggerCelebration = () => {
@@ -50,9 +66,47 @@ export const PricingModal: React.FC<PricingModalProps> = ({
     }
   };
 
-  // Start 3-day free trial or subscribe
+  // Handle Stripe Payment Redirect
+  const handleStripeCheckout = () => {
+    if (!stripeLink.trim()) {
+      setShowStripeInput(true);
+      return;
+    }
+
+    if (typeof window !== 'undefined' && (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
+      (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
+        value: 49.00,
+        currency: 'USD',
+        content_name: 'Stripe ScanCraft Pro $49',
+      });
+    }
+
+    // Direct redirect to Stripe Checkout
+    window.location.href = stripeLink.trim();
+  };
+
+  // Save new Stripe Link
+  const handleSaveStripeLink = (e: React.FormEvent) => {
+    e.preventDefault();
+    const clean = stripeInputVal.trim();
+    saveStoredStripeLink(clean);
+    setStripeLink(clean);
+    setShowStripeInput(false);
+    if (clean) {
+      alert('Stripe 付款链接已保存！现在点击付款将直接跳转到您的 Stripe 收银台。');
+    }
+  };
+
+  // Start 3-day free trial or subscribe with Google Play
   const handleStartGooglePlayBilling = () => {
     setIsProcessing(true);
+    if (typeof window !== 'undefined' && (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
+      (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
+        value: 49.00,
+        currency: 'USD',
+        content_name: billingPlan === 'trial_annual' ? 'ScanCraft Pro 3-Day Trial' : 'ScanCraft Pro Lifetime VIP',
+      });
+    }
     setTimeout(() => {
       setIsProcessing(false);
       setShowPlaySheet(true);
@@ -74,6 +128,21 @@ export const PricingModal: React.FC<PricingModalProps> = ({
     onUpdateSubscription(updated);
     setShowPlaySheet(false);
     triggerCelebration();
+
+    if (typeof window !== 'undefined' && (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
+      if (billingPlan === 'trial_annual') {
+        (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'StartTrial', {
+          value: 49.00,
+          currency: 'USD',
+          predicted_ltv: 49.00,
+        });
+      } else {
+        (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'Subscribe', {
+          value: 49.00,
+          currency: 'USD',
+        });
+      }
+    }
   };
 
   // Redeem Promo code / License key
@@ -302,27 +371,89 @@ export const PricingModal: React.FC<PricingModalProps> = ({
                 </div>
               </div>
 
-              {/* Main Subscribe CTA */}
-              <button
-                onClick={handleStartGooglePlayBilling}
-                disabled={isProcessing}
-                className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 py-3.5 px-6 text-sm font-black text-slate-950 shadow-xl shadow-emerald-500/25 hover:brightness-110 transition active:scale-[0.98]"
-              >
-                <Sparkles className="w-4 h-4 fill-current" />
-                <span>
-                  {billingPlan === 'trial_annual'
-                    ? 'Start 3-Day Free Trial ($49/yr after)'
-                    : 'Get Lifetime VIP Pass for $49'}
-                </span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
+              {/* Dual Payment CTAs: Stripe & Google Play */}
+              <div className="space-y-2.5">
+                {/* Stripe Checkout Button */}
+                <button
+                  onClick={handleStripeCheckout}
+                  disabled={isProcessing}
+                  className="w-full flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 py-3.5 px-6 text-sm font-black text-slate-950 shadow-xl shadow-emerald-500/25 hover:brightness-110 transition active:scale-[0.98]"
+                >
+                  <CreditCard className="w-4 h-4 stroke-[2.5]" />
+                  <span>
+                    {billingPlan === 'trial_annual'
+                      ? '通过 Stripe 支付 $49 (享试用与即时激活)'
+                      : '通过 Stripe 购买 $49 终身版'}
+                  </span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
 
-              <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 text-center">
-                <span>Google Play In-App Billing</span>
+                {/* Google Play Simulated Button */}
+                <button
+                  onClick={handleStartGooglePlayBilling}
+                  disabled={isProcessing}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl border border-slate-700 bg-slate-800/90 py-2.5 px-4 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition"
+                >
+                  <span className="text-emerald-400">▶</span>
+                  <span>Google Play In-App 订阅模式 (3天免费试用)</span>
+                </button>
+              </div>
+
+              {/* Stripe Link Configurator Toggle */}
+              <div className="pt-1 flex items-center justify-between text-[11px] text-slate-400">
+                <div className="flex items-center gap-2">
+                  <span className="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
+                  <span>
+                    {stripeLink ? 'Stripe 付款链接已绑定' : '使用内置演示收款或配置专属 Stripe'}
+                  </span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowStripeInput(!showStripeInput)}
+                  className="text-emerald-400 hover:underline flex items-center gap-1"
+                >
+                  <Settings className="w-3 h-3" />
+                  {showStripeInput ? '收起配置' : '配置 Stripe 链接'}
+                </button>
+              </div>
+
+              {/* Stripe Link Input Field */}
+              {showStripeInput && (
+                <form
+                  onSubmit={handleSaveStripeLink}
+                  className="p-3.5 rounded-xl border border-emerald-900/40 bg-emerald-950/20 space-y-2 animate-in fade-in"
+                >
+                  <div className="flex items-center justify-between text-xs text-slate-200 font-semibold">
+                    <span>设置您的 Stripe Payment Link</span>
+                    <span className="text-[10px] text-slate-400">支持 buy.stripe.com</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="url"
+                      value={stripeInputVal}
+                      onChange={(e) => setStripeInputVal(e.target.value)}
+                      placeholder="https://buy.stripe.com/xxxxxx"
+                      className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-emerald-500 focus:outline-none"
+                    />
+                    <button
+                      type="submit"
+                      className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition"
+                    >
+                      保存
+                    </button>
+                  </div>
+                  <p className="text-[10px] text-slate-400 leading-tight">
+                    在您的 Stripe Dashboard 生成一个 $49.00 的 Payment Link，粘贴在此处即可完成全自动跳转收款！
+                  </p>
+                </form>
+              )}
+
+              <div className="flex items-center justify-center gap-3 text-[11px] text-slate-400 text-center pt-1">
+                <span>Stripe 256位加密</span>
                 <span aria-hidden="true">·</span>
-                <span>Cancel Anytime</span>
+                <span>支持信用卡 / Apple Pay / 支付宝</span>
                 <span aria-hidden="true">·</span>
-                <span>Zero Ads</span>
+                <span>即时开通</span>
               </div>
             </>
           )}

@@ -1,6 +1,7 @@
-import React from 'react';
-import { X, Volume2, Smartphone, Layers, Copy, ExternalLink, RefreshCw, ShieldCheck } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { X, Volume2, Smartphone, Layers, Copy, ExternalLink, RefreshCw, ShieldCheck, CreditCard, Check } from 'lucide-react';
 import { ScannerSettings } from '../types';
+import { getStoredStripeLink, saveStoredStripeLink } from '../utils/storage';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -17,6 +18,15 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onUpdateSettings,
   onOpenPrivacy,
 }) => {
+  const [stripeLink, setStripeLink] = useState('');
+  const [linkSaved, setLinkSaved] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setStripeLink(getStoredStripeLink());
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const toggle = (key: keyof ScannerSettings) => {
@@ -24,6 +34,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       ...settings,
       [key]: !settings[key],
     });
+  };
+
+  const handleSaveStripeLink = (e: React.FormEvent) => {
+    e.preventDefault();
+    saveStoredStripeLink(stripeLink);
+    setLinkSaved(true);
+    setTimeout(() => setLinkSaved(false), 2000);
   };
 
   return (
@@ -122,6 +139,39 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               onChange={() => toggle('autoCopy')}
               className="h-4 w-4 rounded border-slate-700 text-emerald-500 focus:ring-0 cursor-pointer"
             />
+          </div>
+
+          {/* Stripe Payment Link Setting */}
+          <div className="p-3.5 rounded-2xl bg-slate-950/60 border border-slate-800/80 space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-200">
+                <CreditCard className="w-4 h-4 text-emerald-400" />
+                <span>Stripe 付款链接 (Payment Link)</span>
+              </div>
+              {linkSaved && (
+                <span className="text-[10px] text-emerald-400 font-semibold flex items-center gap-1">
+                  <Check className="w-3 h-3" /> 已保存
+                </span>
+              )}
+            </div>
+            <form onSubmit={handleSaveStripeLink} className="flex gap-2">
+              <input
+                type="url"
+                value={stripeLink}
+                onChange={(e) => setStripeLink(e.target.value)}
+                placeholder="https://buy.stripe.com/xxxxxx"
+                className="flex-1 rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 focus:border-emerald-500 focus:outline-none"
+              />
+              <button
+                type="submit"
+                className="px-3 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition"
+              >
+                保存
+              </button>
+            </form>
+            <p className="text-[10px] text-slate-400">
+              设置后，网页端点击订阅即可直接调用您的专属 Stripe 页面进行全球收款。
+            </p>
           </div>
         </div>
 

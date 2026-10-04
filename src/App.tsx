@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import confetti from 'canvas-confetti';
 import {
   Camera,
   Image as ImageIcon,
@@ -62,11 +63,59 @@ export default function App() {
   // Generator pre-filled text
   const [generatorText, setGeneratorText] = useState<string | undefined>(undefined);
 
-  // Load initial persistent storage
+  // Load initial persistent storage & check for Stripe payment return
   useEffect(() => {
     setHistoryItems(getStoredHistory());
-    setSubscription(getStoredSubscription());
     setSettings(getStoredSettings());
+
+    const currentSub = getStoredSubscription();
+    setSubscription(currentSub);
+
+    // Detect Stripe checkout return
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (
+        params.get('payment') === 'success' ||
+        params.get('session_id') ||
+        params.get('stripe_success') === 'true'
+      ) {
+        const orderId = params.get('session_id') || `STRIPE.${Date.now()}`;
+        const newSub: SubscriptionState = {
+          isPro: true,
+          trialActive: false,
+          trialExpiresAt: null,
+          purchasedAt: Date.now(),
+          planType: 'annual',
+          orderId,
+        };
+
+        setSubscription(newSub);
+        saveStoredSubscription(newSub);
+
+        // Confetti celebration
+        try {
+          confetti({
+            particleCount: 100,
+            spread: 80,
+            origin: { y: 0.5 },
+            colors: ['#10b981', '#06b6d4', '#f59e0b', '#ffffff'],
+          });
+        } catch {
+          // Ignored
+        }
+
+        // Meta Pixel Purchase tracking
+        if ((window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
+          (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'Purchase', {
+            value: 49.00,
+            currency: 'USD',
+          });
+        }
+
+        // Clean query string from browser URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
   }, []);
 
   // Update subscription
