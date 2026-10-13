@@ -8,11 +8,14 @@ export type QRCategory =
   | 'sms'
   | 'location'
   | 'social'
-  | 'product';
+  | 'product'
+  | 'barcode'
+  | 'ocr'
+  | 'invoice';
 
 export interface QRItem {
   id: string;
-  type: 'scan' | 'generate';
+  type: 'scan' | 'generate' | 'ocr';
   source: 'camera' | 'album' | 'manual';
   category: QRCategory;
   title: string;
@@ -23,12 +26,14 @@ export interface QRItem {
   isFavorite: boolean;
 }
 
+export type PlanType = 'none' | 'trial' | 'annual' | 'lifetime' | 'starter' | 'pro' | 'ultra';
+
 export interface SubscriptionState {
   isPro: boolean;
   trialActive: boolean;
   trialExpiresAt: number | null;
   purchasedAt: number | null;
-  planType: 'none' | 'trial' | 'annual' | 'lifetime';
+  planType: PlanType;
   licenseKey?: string;
   orderId?: string;
 }

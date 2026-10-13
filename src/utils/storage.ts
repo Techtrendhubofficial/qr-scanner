@@ -1,10 +1,10 @@
 import { QRItem, ScannerSettings, SubscriptionState } from '../types';
 
 const STORAGE_KEYS = {
-  HISTORY: 'scancraft_history_v1',
-  SUBSCRIPTION: 'scancraft_subscription_v1',
-  SETTINGS: 'scancraft_settings_v1',
-  STRIPE_LINK: 'scancraft_stripe_link_v1',
+  HISTORY: 'pavilion_qr_history_v1',
+  SUBSCRIPTION: 'pavilion_qr_subscription_v1',
+  SETTINGS: 'pavilion_qr_settings_v1',
+  STRIPE_LINK: 'pavilion_qr_stripe_link_v1',
 };
 
 const DEFAULT_SETTINGS: ScannerSettings = {
@@ -23,68 +23,22 @@ const DEFAULT_SUBSCRIPTION: SubscriptionState = {
   planType: 'none',
 };
 
-const SEED_HISTORY: QRItem[] = [
-  {
-    id: 'seed-1',
-    type: 'scan',
-    source: 'camera',
-    category: 'wifi',
-    title: 'Wi-Fi: Google_Fiber_5G',
-    content: 'SSID: Google_Fiber_5G · Security: WPA/WPA2',
-    rawText: 'WIFI:S:Google_Fiber_5G;T:WPA;P:SuperSecretPass2026;;',
-    metadata: {
-      SSID: 'Google_Fiber_5G',
-      Password: 'SuperSecretPass2026',
-      Security: 'WPA/WPA2',
-    },
-    timestamp: Date.now() - 3600 * 1000 * 4,
-    isFavorite: true,
-  },
-  {
-    id: 'seed-2',
-    type: 'scan',
-    source: 'album',
-    category: 'url',
-    title: 'Website: play.google.com',
-    content: 'https://play.google.com/store/apps',
-    rawText: 'https://play.google.com/store/apps',
-    metadata: {
-      Domain: 'play.google.com',
-      Protocol: 'https',
-    },
-    timestamp: Date.now() - 3600 * 1000 * 24,
-    isFavorite: false,
-  },
-  {
-    id: 'seed-3',
-    type: 'generate',
-    source: 'manual',
-    category: 'contact',
-    title: 'Jason Ang (Developer)',
-    content: 'Jason Ang · +1 800 555 0199',
-    rawText: 'BEGIN:VCARD\nVERSION:3.0\nFN:Jason Ang\nTEL:+18005550199\nEMAIL:jasonang9996@gmail.com\nORG:ScanCraft Team\nTITLE:Lead Engineer\nEND:VCARD',
-    metadata: {
-      Name: 'Jason Ang',
-      Phone: '+1 800 555 0199',
-      Email: 'jasonang9996@gmail.com',
-      Company: 'ScanCraft Team',
-    },
-    timestamp: Date.now() - 3600 * 1000 * 48,
-    isFavorite: true,
-  },
-];
-
 export function getStoredHistory(): QRItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.HISTORY);
     if (!raw) {
-      localStorage.setItem(STORAGE_KEYS.HISTORY, JSON.stringify(SEED_HISTORY));
-      return SEED_HISTORY;
+      return [];
     }
-    return JSON.parse(raw);
+    const items: QRItem[] = JSON.parse(raw);
+    // Filter out any legacy demo / seed items
+    const cleanItems = items.filter((item) => !item.id.startsWith('seed-'));
+    if (cleanItems.length !== items.length) {
+      saveStoredHistory(cleanItems);
+    }
+    return cleanItems;
   } catch (e) {
     console.error('Failed to load history:', e);
-    return SEED_HISTORY;
+    return [];
   }
 }
 
@@ -174,4 +128,68 @@ export function saveStoredStripeLink(link: string): void {
     console.error('Failed to save Stripe link:', e);
   }
 }
+
+/**
+ * 检查用户是否为解锁 Pro 用户 (基于 localStorage isPremium)
+ */
+export function isPro(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem('isPremium') === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function setPremiumStatus(isPremium: boolean): void {
+  try {
+    if (isPremium) {
+      localStorage.setItem('isPremium', 'true');
+      localStorage.removeItem('scanCount');
+    } else {
+      localStorage.removeItem('isPremium');
+    }
+  } catch (e) {
+    console.error('Failed to set premium status:', e);
+  }
+}
+
+/**
+ * 获取当前已用扫描次数
+ */
+export function getScanCount(): number {
+  if (typeof window === 'undefined') return 0;
+  try {
+    const raw = localStorage.getItem('scanCount');
+    return raw ? parseInt(raw, 10) || 0 : 0;
+  } catch {
+    return 0;
+  }
+}
+
+/**
+ * 增加扫描次数并返回新计数
+ */
+export function incrementScanCount(): number {
+  try {
+    const current = getScanCount();
+    const next = current + 1;
+    localStorage.setItem('scanCount', next.toString());
+    return next;
+  } catch {
+    return 1;
+  }
+}
+
+/**
+ * 重置扫描次数
+ */
+export function resetScanCount(): void {
+  try {
+    localStorage.removeItem('scanCount');
+  } catch (e) {
+    console.error('Failed to reset scan count:', e);
+  }
+}
+
 

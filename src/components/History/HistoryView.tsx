@@ -20,7 +20,7 @@ import {
   Barcode,
 } from 'lucide-react';
 import { QRItem, QRCategory } from '../../types';
-import { exportToCSV, exportToJSON, exportToTXT } from '../../utils/export';
+import { exportToExcel, exportToReceipt, exportToSQLAccSheet } from '../../utils/export';
 
 interface HistoryViewProps {
   items: QRItem[];
@@ -189,46 +189,46 @@ export const HistoryView: React.FC<HistoryViewProps> = ({
             </button>
 
             {showExportMenu && (
-              <div className="absolute right-0 mt-2 w-52 rounded-2xl border border-slate-800 bg-slate-900 p-2 shadow-2xl z-30 space-y-1 animate-in fade-in">
+              <div className="absolute right-0 mt-2 w-60 rounded-2xl border border-slate-800 bg-slate-900 p-2 shadow-2xl z-30 space-y-1 animate-in fade-in">
                 <button
                   onClick={() => {
-                    exportToCSV(filteredItems);
+                    exportToExcel(filteredItems);
                     setShowExportMenu(false);
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition text-left"
                 >
                   <FileSpreadsheet className="w-4 h-4 text-emerald-400" />
                   <div>
-                    <span className="font-medium block">Export as CSV</span>
-                    <span className="text-[10px] text-slate-400">Excel / Google Sheets</span>
+                    <span className="font-bold block text-white">1. 导出 Excel</span>
+                    <span className="text-[10px] text-slate-400">发票明细/Excel双击即开</span>
                   </div>
                 </button>
 
                 <button
                   onClick={() => {
-                    exportToJSON(filteredItems);
-                    setShowExportMenu(false);
-                  }}
-                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition text-left"
-                >
-                  <FileCode className="w-4 h-4 text-cyan-400" />
-                  <div>
-                    <span className="font-medium block">Export as JSON</span>
-                    <span className="text-[10px] text-slate-400">Complete raw backup</span>
-                  </div>
-                </button>
-
-                <button
-                  onClick={() => {
-                    exportToTXT(filteredItems);
+                    exportToReceipt(filteredItems);
                     setShowExportMenu(false);
                   }}
                   className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition text-left"
                 >
                   <FileText className="w-4 h-4 text-amber-400" />
                   <div>
-                    <span className="font-medium block">Export as TXT</span>
-                    <span className="text-[10px] text-slate-400">Formatted text report</span>
+                    <span className="font-bold block text-white">2. 导出 Resit / Receipt</span>
+                    <span className="text-[10px] text-slate-400">商业收据/热敏凭证格式</span>
+                  </div>
+                </button>
+
+                <button
+                  onClick={() => {
+                    exportToSQLAccSheet(filteredItems);
+                    setShowExportMenu(false);
+                  }}
+                  className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs text-slate-200 hover:bg-slate-800 transition text-left"
+                >
+                  <FileCode className="w-4 h-4 text-cyan-400" />
+                  <div>
+                    <span className="font-bold block text-white">3. 导出 SQL Acc Sheet</span>
+                    <span className="text-[10px] text-slate-400">SQL Accounting 标准导入表</span>
                   </div>
                 </button>
               </div>

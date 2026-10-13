@@ -4,11 +4,13 @@ import { X, ShieldCheck, Lock, EyeOff, Smartphone, Mail, CheckCircle2 } from 'lu
 interface PrivacyPolicyModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onOpenPrivacyAudit?: () => void;
 }
 
 export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
   isOpen,
   onClose,
+  onOpenPrivacyAudit,
 }) => {
   if (!isOpen) return null;
 
@@ -26,7 +28,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
                 Google Play Compliance & Privacy Policy
               </h3>
               <p className="text-[11px] text-slate-400">
-                Effective: October 2026 · ScanCraft Pro
+                Effective: October 2026 · Pavilion QR Pro
               </p>
             </div>
           </div>
@@ -45,7 +47,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
               <Lock className="w-3.5 h-3.5" /> 100% On-Device Processing Guarantee
             </span>
             <p className="text-slate-300 text-[11px]">
-              ScanCraft Pro decodes all QR codes and barcodes strictly in volatile device memory using WebAssembly / Canvas. No video frames, camera streams, or uploaded album photos are ever uploaded to remote servers or third parties.
+              Pavilion QR Pro decodes all QR codes and barcodes strictly in volatile device memory using WebAssembly / Canvas. No video frames, camera streams, or uploaded album photos are ever uploaded to remote servers or third parties.
             </p>
           </div>
 
@@ -88,7 +90,19 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="mt-5 pt-3 border-t border-slate-800 flex justify-end">
+        <div className="mt-5 pt-3 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+          {onOpenPrivacyAudit && (
+            <button
+              onClick={() => {
+                onClose();
+                onOpenPrivacyAudit();
+              }}
+              className="text-xs text-[#00ff88] hover:underline flex items-center gap-1 transition"
+            >
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>现场运行零留存检测 & 查看防嫁祸报告</span>
+            </button>
+          )}
           <button
             onClick={onClose}
             className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-100 transition"

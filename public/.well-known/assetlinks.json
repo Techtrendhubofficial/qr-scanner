@@ -3,7 +3,17 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.scancraft.qr",
+      "package_name": "com.pavilionventure.qr",
+      "sha256_cert_fingerprints": [
+        "14:6D:E9:7D:0C:52:AB:71:3E:6F:77:45:90:3A:DF:22:98:33:F3:8E:7F:4F:92:4A:2A:77:86:14:4E:57:33:3A"
+      ]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.pavilionventure.pavilionqrpro",
       "sha256_cert_fingerprints": [
         "14:6D:E9:7D:0C:52:AB:71:3E:6F:77:45:90:3A:DF:22:98:33:F3:8E:7F:4F:92:4A:2A:77:86:14:4E:57:33:3A"
       ]

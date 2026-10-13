@@ -17,7 +17,7 @@ export const PWAInstallButton: React.FC = () => {
       <button
         onClick={install}
         className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-900/90 px-2.5 py-1.5 text-xs font-medium text-slate-200 hover:bg-slate-800 hover:text-white transition"
-        title="Install ScanCraft Pro App"
+        title="Install Pavilion QR Pro App"
       >
         <Download className="w-3.5 h-3.5 text-emerald-400" />
         <span className="hidden sm:inline">Install App</span>
@@ -43,7 +43,7 @@ export const PWAInstallButton: React.FC = () => {
               <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                 <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
                   <Download className="w-4 h-4 text-emerald-400" />
-                  Install ScanCraft on iPhone
+                  Install Pavilion QR Pro on iPhone
                 </h3>
                 <button
                   onClick={() => setShowIOSGuide(false)}

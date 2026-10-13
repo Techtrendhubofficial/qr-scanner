@@ -61,15 +61,15 @@ export const QRGenerator: React.FC<QRGeneratorProps> = ({
   const [wifiSecurity, setWifiSecurity] = useState('WPA');
   const [wifiHidden, setWifiHidden] = useState(false);
 
-  const [plainText, setPlainText] = useState(initialText || 'ScanCraft Pro - Premium QR Engine');
+  const [plainText, setPlainText] = useState(initialText || 'Pavilion QR Pro - Premium QR Engine');
 
   const [contactName, setContactName] = useState('Jason Ang');
   const [contactPhone, setContactPhone] = useState('+1 800 555 0199');
   const [contactEmail, setContactEmail] = useState('jasonang9996@gmail.com');
-  const [contactCompany, setContactCompany] = useState('ScanCraft Tech');
+  const [contactCompany, setContactCompany] = useState('Pavilion Venture');
   const [contactTitle, setContactTitle] = useState('Software Architect');
 
-  const [emailTo, setEmailTo] = useState('support@scancraft.app');
+  const [emailTo, setEmailTo] = useState('jasonang9996@gmail.com');
   const [emailSubject, setEmailSubject] = useState('Inquiry');
   const [emailBody, setEmailBody] = useState('Hello Team,');
 
@@ -217,7 +217,7 @@ export const QRGenerator: React.FC<QRGeneratorProps> = ({
     if (!canvasRef.current) return;
     const { title, payload, category } = computePayload();
     const link = document.createElement('a');
-    link.download = `scancraft_qr_${Date.now()}.png`;
+    link.download = `pavilion_qr_${Date.now()}.png`;
     link.href = canvasRef.current.toDataURL('image/png', 1.0);
     link.click();
 
@@ -249,7 +249,7 @@ export const QRGenerator: React.FC<QRGeneratorProps> = ({
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `scancraft_qr_${Date.now()}.svg`;
+      link.download = `pavilion_qr_${Date.now()}.svg`;
       link.click();
       URL.revokeObjectURL(url);
 

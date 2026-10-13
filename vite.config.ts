@@ -14,9 +14,9 @@ export default defineConfig(() => {
         includeAssets: ['icon.svg', 'apple-touch-icon.png', 'pwa-192x192.png', 'pwa-512x512.png'],
         manifest: {
           id: '/',
-          name: 'ScanCraft Pro - QR Scanner & Generator',
-          short_name: 'ScanCraft',
-          description: 'Ultra-fast QR & Barcode scanner, album photo reader, custom QR generator, and exportable history.',
+          name: 'Pavilion QR Pro',
+          short_name: 'Pavilion QR',
+          description: '极速二维码与条形码识别扫描、相册读取、高清矢量码制作与凭据导出工具。',
           theme_color: '#0f172a',
           background_color: '#020617',
           display: 'standalone',
@@ -57,12 +57,18 @@ export default defineConfig(() => {
     ],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
+        '@': path.resolve(import.meta.dirname || '.', '.'),
       },
     },
     server: {
+      port: 3000,
+      host: '0.0.0.0',
       hmr: process.env.DISABLE_HMR !== 'true',
       watch: process.env.DISABLE_HMR === 'true' ? null : {},
+    },
+    preview: {
+      port: 3000,
+      host: '0.0.0.0',
     },
   };
 });

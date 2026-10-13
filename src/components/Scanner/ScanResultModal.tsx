@@ -10,6 +10,8 @@ import {
   Mail,
   MessageSquare,
   MapPin,
+  ScanText,
+  FileSpreadsheet,
   FileText,
   Star,
   Share2,
@@ -19,12 +21,14 @@ import {
 } from 'lucide-react';
 import { QRItem } from '../../types';
 import { parseQRContent } from '../../utils/qrParser';
+import { exportToExcel, exportToReceipt, exportToSQLAccSheet } from '../../utils/export';
 
 interface ScanResultModalProps {
   item: QRItem | null;
   onClose: () => void;
   onToggleFavorite?: (id: string) => void;
   onGenerateFromThis?: (rawText: string) => void;
+  onOpenPrivacyAudit?: () => void;
 }
 
 export const ScanResultModal: React.FC<ScanResultModalProps> = ({
@@ -32,9 +36,11 @@ export const ScanResultModal: React.FC<ScanResultModalProps> = ({
   onClose,
   onToggleFavorite,
   onGenerateFromThis,
+  onOpenPrivacyAudit,
 }) => {
   const [copied, setCopied] = useState(false);
   const [passCopied, setPassCopied] = useState(false);
+  const [invCopied, setInvCopied] = useState(false);
 
   if (!item) return null;
 
@@ -85,7 +91,12 @@ export const ScanResultModal: React.FC<ScanResultModalProps> = ({
       case 'location':
         return <MapPin className="w-5 h-5 text-rose-400" />;
       case 'product':
+      case 'barcode':
         return <Barcode className="w-5 h-5 text-orange-400" />;
+      case 'ocr':
+        return <ScanText className="w-5 h-5 text-[#00ff88]" />;
+      case 'invoice':
+        return <FileSpreadsheet className="w-5 h-5 text-[#00ff88]" />;
       default:
         return <FileText className="w-5 h-5 text-slate-300" />;
     }
@@ -210,6 +221,81 @@ export const ScanResultModal: React.FC<ScanResultModalProps> = ({
             </div>
           )}
 
+          {/* Invoice / Commercial Receipt Inspector Card */}
+          {(parsed.category === 'invoice' || item.category === 'invoice' || item.type === 'ocr') && (
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-950/20 p-4 space-y-3">
+              <div className="flex items-center justify-between pb-2 border-b border-emerald-900/40">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+                    <FileSpreadsheet className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-bold text-white">Commercial Invoice Details</span>
+                </div>
+                <span className="text-[10px] font-bold text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded-full border border-emerald-800/60">
+                  On-Device Parsed
+                </span>
+              </div>
+
+              {/* Key invoice metrics */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                {parsed.metadata['Merchant / Issuer'] && (
+                  <div className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block">Merchant / Issuer</span>
+                    <span className="text-xs font-bold text-slate-100 truncate block mt-0.5">
+                      {parsed.metadata['Merchant / Issuer']}
+                    </span>
+                  </div>
+                )}
+                {parsed.metadata['Invoice No'] && (
+                  <div className="p-2.5 rounded-xl bg-slate-950/70 border border-slate-800">
+                    <span className="text-[10px] text-slate-400 block">Invoice / Receipt No.</span>
+                    <span className="text-xs font-bold font-mono text-emerald-400 truncate block mt-0.5">
+                      #{parsed.metadata['Invoice No']}
+                    </span>
+                  </div>
+                )}
+                {parsed.metadata['Total Amount'] && (
+                  <div className="p-2.5 rounded-xl bg-slate-950/70 border border-emerald-500/30 col-span-2 flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block">Detected Total Amount</span>
+                      <span className="text-base font-black text-[#00ff88]">
+                        {parsed.metadata['Total Amount']}
+                      </span>
+                    </div>
+                    {parsed.metadata['Date'] && (
+                      <div className="text-right">
+                        <span className="text-[10px] text-slate-400 block">Document Date</span>
+                        <span className="text-xs font-mono text-slate-200">
+                          {parsed.metadata['Date']}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Dedicated Privacy Audit callout for customers */}
+              <div className="pt-2 border-t border-emerald-900/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-black/40 p-2.5 rounded-xl">
+                <div className="flex items-center gap-2 text-[11px] text-slate-300">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>顾客问是否有收文件？出示零留存公证书</span>
+                </div>
+                {onOpenPrivacyAudit && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onClose();
+                      onOpenPrivacyAudit();
+                    }}
+                    className="px-3 py-1.5 rounded-lg bg-[#00ff88] hover:bg-[#33ff9f] text-black text-[11px] font-black transition flex items-center justify-center gap-1 shrink-0 cursor-pointer shadow-sm shadow-[#00ff88]/20"
+                  >
+                    <span>🛡️ 运行隐私检测与防嫁祸报告</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Contact Special Card */}
           {parsed.category === 'contact' && (
             <div className="rounded-xl border border-slate-800 bg-slate-950/50 p-4 space-y-2 text-xs">
@@ -230,6 +316,44 @@ export const ScanResultModal: React.FC<ScanResultModalProps> = ({
             </div>
             <div className="relative rounded-xl border border-slate-800 bg-slate-950 p-3 text-xs font-mono text-slate-300 break-all select-all max-h-40 overflow-y-auto leading-relaxed">
               {item.rawText}
+            </div>
+          </div>
+
+          {/* 3 Core Exports (No-PDF Light Edition) */}
+          <div className="space-y-1.5 pt-1">
+            <span className="text-[11px] font-bold text-slate-400 block">
+              专业数据导出 (Pavilion QR Pro):
+            </span>
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => exportToExcel([item], `Invoice_${item.id.slice(0, 6)}.csv`)}
+                className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-emerald-500/30 text-emerald-300 transition cursor-pointer"
+                title="导出 Excel"
+              >
+                <FileSpreadsheet className="w-4 h-4 mb-0.5 text-emerald-400" />
+                <span className="text-[10px] font-bold">导出 Excel</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => exportToReceipt([item], `Resit_${item.id.slice(0, 6)}.txt`)}
+                className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-amber-500/30 text-amber-300 transition cursor-pointer"
+                title="导出 Resit / Receipt"
+              >
+                <FileText className="w-4 h-4 mb-0.5 text-amber-400" />
+                <span className="text-[10px] font-bold">导出 Resit</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => exportToSQLAccSheet([item], `SQL_Acc_${item.id.slice(0, 6)}.csv`)}
+                className="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-cyan-500/30 text-cyan-300 transition cursor-pointer"
+                title="导出 SQL Acc Sheet"
+              >
+                <FileSpreadsheet className="w-4 h-4 mb-0.5 text-cyan-400" />
+                <span className="text-[10px] font-bold">导出 SQL Acc</span>
+              </button>
             </div>
           </div>
 

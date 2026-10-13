@@ -245,7 +245,114 @@ export function parseQRContent(rawText: string): ParsedQR {
     }
   }
 
-  // 8. Plain Text / Barcode Numbers / Other
+  // 8. Invoice / Bill / Commercial Receipt detection
+  const upper = trimmed.toUpperCase();
+  const isInvoice =
+    upper.includes('INVOICE') ||
+    upper.includes('TAX INVOICE') ||
+    upper.includes('RECEIPT') ||
+    upper.includes('BILL TO') ||
+    upper.includes('FAKTUR') ||
+    upper.includes('RESIT') ||
+    upper.includes('发票') ||
+    upper.includes('单据') ||
+    upper.includes('账单') ||
+    upper.includes('收据') ||
+    /INV[-\s#:]*[A-Z0-9]{3,}/i.test(trimmed);
+
+  if (isInvoice) {
+    const lines = trimmed.split('\n').map((l) => l.trim()).filter((l) => l.length > 0);
+
+    // 1. Detect Merchant / Issuer name from first few lines
+    let merchantName = '';
+    const merchantKeywords = ['SDN BHD', 'BHD', 'ENTERPRISE', 'TRADING', 'SERVICES', 'COMPANY', 'CO.', 'STORE', 'SHOP', 'RESTAURANT', 'CAFE', 'LLC', 'PTE LTD', 'LTD', 'CORP', '有限公司', '企业', '商行'];
+    for (let i = 0; i < Math.min(5, lines.length); i++) {
+      const lineUpper = lines[i].toUpperCase();
+      if (merchantKeywords.some((kw) => lineUpper.includes(kw))) {
+        merchantName = lines[i];
+        break;
+      }
+    }
+    if (!merchantName && lines.length > 0) {
+      // First line if not generic "INVOICE"
+      const firstLine = lines[0];
+      if (!/^(INVOICE|TAX INVOICE|RECEIPT|BILL|发票|收据)$/i.test(firstLine)) {
+        merchantName = firstLine.slice(0, 40);
+      }
+    }
+
+    // 2. Extract Real Invoice / Receipt Number
+    const invNoMatch =
+      trimmed.match(/(?:TAX\s*INVOICE|INVOICE\s*(?:NO|NUMBER|#)?|INV\s*(?:NO|#)?|RECEIPT\s*(?:NO|#)?|BILL\s*(?:NO|#)?|ORDER\s*(?:NO|#)?|REF\s*(?:NO|#)?|发票号码|单据编号|账单号|发票号|单号)[\s:：#\.\-]*([A-Z0-9\-_/]{3,30})/i) ||
+      trimmed.match(/(?:INV|REC|BILL)[-:\s#]+([A-Z0-9\-_/]{3,24})/i);
+    const realInvNo = invNoMatch ? invNoMatch[1].trim() : '';
+
+    // 3. Extract Real Amount
+    const totalMatch =
+      trimmed.match(/(?:GRAND\s*TOTAL|TOTAL\s*AMOUNT|TOTAL\s*PAYABLE|BALANCE\s*DUE|NET\s*TOTAL|TOTAL|AMOUNT|SUBTOTAL|应付金额|合计|总额|总计|实付)[\s:：]*(?:RM|\$|MYR|SGD|USD|CNY|¥|€)?\s*([\d,]+\.\d{2})/i) ||
+      trimmed.match(/(?:RM|\$|MYR|SGD|USD)\s*([\d,]+\.\d{2})/i) ||
+      trimmed.match(/(?:GRAND\s*TOTAL|TOTAL|总计|合计)[\s:：]*([\d,]+\.?\d*)/i);
+
+    let detectedAmount = '';
+    if (totalMatch) {
+      const numStr = totalMatch[1].trim();
+      const rawMatchText = totalMatch[0].toUpperCase();
+      if (rawMatchText.includes('$') || trimmed.includes('$')) {
+        detectedAmount = `$ ${numStr}`;
+      } else if (rawMatchText.includes('SGD') || trimmed.includes('SGD')) {
+        detectedAmount = `SGD ${numStr}`;
+      } else if (rawMatchText.includes('USD') || trimmed.includes('USD')) {
+        detectedAmount = `USD ${numStr}`;
+      } else {
+        detectedAmount = `RM ${numStr}`;
+      }
+    }
+
+    // 4. Extract Real Date
+    const dateMatch =
+      trimmed.match(/(?:DATE|INVOICE\s*DATE|BILL\s*DATE|日期|开票日期)[\s:：]*(\d{4}[-/.]\d{1,2}[-/.]\d{1,2}|\d{1,2}[-/.]\d{1,2}[-/.]\d{2,4}|\d{4}年\d{1,2}月\d{1,2}日)/i) ||
+      trimmed.match(/(\d{4}[-/.]\d{1,2}[-/.]\d{1,2})/);
+    const detectedDate = dateMatch ? dateMatch[1].trim() : '';
+
+    // Title construction without dummy fallback
+    let docTitle = '';
+    if (merchantName) {
+      docTitle = realInvNo ? `${merchantName} (${realInvNo})` : merchantName;
+    } else if (realInvNo) {
+      docTitle = `Invoice #${realInvNo}`;
+    } else {
+      docTitle = lines[0] ? lines[0].slice(0, 30) : 'Commercial Document';
+    }
+
+    // Summary display
+    const summaryParts: string[] = [];
+    if (merchantName) summaryParts.push(merchantName);
+    if (realInvNo) summaryParts.push(`#${realInvNo}`);
+    if (detectedAmount) summaryParts.push(detectedAmount);
+    if (detectedDate) summaryParts.push(detectedDate);
+    const displayVal = summaryParts.length > 0 ? summaryParts.join(' · ') : trimmed.slice(0, 80);
+
+    const metadata: Record<string, string> = {
+      'Document Type': 'Commercial Invoice / Receipt',
+    };
+    if (merchantName) metadata['Merchant / Issuer'] = merchantName;
+    if (realInvNo) metadata['Invoice No'] = realInvNo;
+    if (detectedAmount) metadata['Total Amount'] = detectedAmount;
+    if (detectedDate) metadata['Date'] = detectedDate;
+    metadata['Lines Count'] = `${lines.length} lines detected`;
+    metadata['Privacy & Zero-Leak'] = '100% On-Device Sandbox (0 Server Upload)';
+
+    return {
+      category: 'invoice',
+      title: docTitle,
+      displayValue: displayVal,
+      metadata,
+      isActionable: true,
+      actionLabel: 'Copy Invoice Details',
+    };
+  }
+
+  // 9. Plain Text / Barcode Numbers / Other
   const isBarcode = /^\d{8,14}$/.test(trimmed);
   return {
     category: isBarcode ? 'product' : 'text',

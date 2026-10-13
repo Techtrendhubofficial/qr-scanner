@@ -2,6 +2,7 @@ import React from 'react';
 import { Crown, Sparkles, ShieldCheck, Download, Settings, History, QrCode, Image as ImageIcon, Camera } from 'lucide-react';
 import { ActiveTab, SubscriptionState } from '../types';
 import { PWAInstallButton } from './PWAInstallButton';
+import { getStripeCheckoutUrl } from '../utils/stripe';
 
 interface NavbarProps {
   activeTab: ActiveTab;
@@ -11,6 +12,7 @@ interface NavbarProps {
   onOpenPrivacy: () => void;
   onOpenSettings: () => void;
   onOpenPlayGuide: () => void;
+  onOpenPrivacyAudit?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -21,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenPrivacy,
   onOpenSettings,
   onOpenPlayGuide,
+  onOpenPrivacyAudit,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md">
@@ -35,7 +38,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <QrCode className="h-4 w-4 text-slate-950 stroke-[2.5]" />
             </div>
             <span className="font-bold tracking-tight text-slate-100 text-base flex items-center gap-1.5">
-              ScanCraft Pro
+              Pavilion QR Pro
               {subscription.isPro ? (
                 <span className="inline-flex items-center text-[10px] font-semibold text-emerald-400 bg-emerald-950/60 border border-emerald-800/60 px-1.5 py-0.5 rounded">
                   VIP
@@ -104,21 +107,42 @@ export const Navbar: React.FC<NavbarProps> = ({
           {subscription.isPro ? (
             <button
               onClick={onOpenPricing}
-              className="flex items-center gap-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20"
-              title="Manage Pro Subscription"
+              className="flex items-center gap-1.5 rounded-lg bg-[#00ff88]/10 border border-[#00ff88]/30 px-3 py-1.5 text-xs font-bold text-[#00ff88] transition hover:bg-[#00ff88]/20"
+              title="Manage Subscription"
             >
-              <Crown className="h-3.5 w-3.5 text-emerald-400" />
-              <span className="hidden sm:inline">VIP Active</span>
-              <span className="sm:hidden">VIP</span>
+              <Crown className="h-3.5 w-3.5 text-[#00ff88]" />
+              <span className="hidden sm:inline">Active Plan</span>
+              <span className="sm:hidden">Active</span>
             </button>
           ) : (
-            <button
-              onClick={onOpenPricing}
-              className="flex items-center gap-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-500 px-3 py-1.5 text-xs font-semibold text-slate-950 shadow-sm shadow-emerald-500/20 transition hover:brightness-110 active:scale-95"
+            <a
+              href={getStripeCheckoutUrl()}
+              onClick={() => {
+                if (typeof window !== 'undefined' && (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
+                  (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
+                    value: 29.00,
+                    currency: 'MYR',
+                    content_name: 'Navbar Unlock Starter',
+                  });
+                }
+              }}
+              className="flex items-center gap-1.5 rounded-lg bg-[#00ff88] hover:bg-[#33ff9f] px-3 py-1.5 text-xs font-black text-black shadow-sm shadow-[#00ff88]/30 transition hover:brightness-105 active:scale-95 no-underline"
             >
-              <Sparkles className="h-3.5 w-3.5 text-slate-950 fill-current" />
-              <span>3-Day Free Trial</span>
-              <span className="hidden sm:inline text-slate-900/80 font-normal">($49/yr)</span>
+              <Sparkles className="h-3.5 w-3.5 text-black fill-current" />
+              <span>Unlock</span>
+              <span className="hidden sm:inline font-bold text-black/90">(RM59/mo)</span>
+            </a>
+          )}
+
+          {/* Privacy Audit / Anti-Framing Report button */}
+          {onOpenPrivacyAudit && (
+            <button
+              onClick={onOpenPrivacyAudit}
+              className="flex items-center gap-1 rounded-lg border border-[#00ff88]/30 bg-[#00ff88]/10 px-2.5 py-1.5 text-xs font-bold text-[#00ff88] hover:bg-[#00ff88]/20 transition"
+              title="客户文件零留存检测与防栽赃证明报告"
+            >
+              <ShieldCheck className="h-3.5 w-3.5 text-[#00ff88]" />
+              <span className="hidden sm:inline">零留存报告</span>
             </button>
           )}
 

@@ -1,6 +1,6 @@
 {
-  "name": "ScanCraft Pro - QR Scanner & Generator",
-  "description": "Ultra-fast QR & Barcode scanner, album photo reader, custom QR generator, and exportable history. Google Play competitive value with 3-day free trial.",
+  "name": "Pavilion QR Pro - QR Scanner & Generator",
+  "description": "Ultra-fast QR & Barcode scanner, album photo reader, custom QR generator, and exportable history. Official domain: qr.pavilionventure.com",
   "requestFramePermissions": [
     "camera"
   ],

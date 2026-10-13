@@ -36,14 +36,14 @@ export const BottomNav: React.FC<BottomNavProps> = ({
     },
     {
       id: 'vip' as ActiveTab,
-      label: subscription.isPro ? 'VIP Plan' : 'Trial ($49)',
+      label: subscription.isPro ? 'VIP Active' : 'Plans (RM59)',
       icon: Crown,
       highlight: !subscription.isPro,
     },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-slate-800 bg-slate-950/95 backdrop-blur-lg">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-zinc-800 bg-black/95 backdrop-blur-lg">
       <div className="grid grid-cols-5 items-center h-16 max-w-lg mx-auto px-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
@@ -55,10 +55,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
               onClick={() => setActiveTab(tab.id)}
               className={`flex flex-col items-center justify-center min-h-[48px] py-1 transition-all ${
                 isActive
-                  ? 'text-emerald-400 font-semibold'
+                  ? 'text-[#00ff88] font-bold'
                   : tab.highlight
-                  ? 'text-amber-400 hover:text-amber-300'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'text-[#00ff88] hover:text-[#33ff9f]'
+                  : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
               <div className="relative">
@@ -69,8 +69,8 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                 />
                 {tab.id === 'vip' && !subscription.isPro && (
                   <span className="absolute -top-1 -right-2 flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ff88] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ff88]"></span>
                   </span>
                 )}
               </div>
