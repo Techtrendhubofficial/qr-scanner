@@ -16,27 +16,27 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   const tabs = [
     {
       id: 'scan' as ActiveTab,
-      label: 'Live Scan',
+      label: '实时扫码',
       icon: Camera,
     },
     {
       id: 'album' as ActiveTab,
-      label: 'From Album',
+      label: '相册识别',
       icon: ImageIcon,
     },
     {
       id: 'generate' as ActiveTab,
-      label: 'Create QR',
+      label: '生成QR',
       icon: QrCode,
     },
     {
       id: 'history' as ActiveTab,
-      label: 'History',
+      label: '历史导出',
       icon: History,
     },
     {
       id: 'vip' as ActiveTab,
-      label: subscription.isPro ? 'VIP Active' : 'Plans (RM59)',
+      label: subscription.isPro ? 'VIP尊享' : '会员配套',
       icon: Crown,
       highlight: !subscription.isPro,
     },

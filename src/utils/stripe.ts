@@ -1,15 +1,18 @@
 /**
- * Official Stripe Payment Links
- * No ?success_url parameter (redirects are configured in Stripe Dashboard to /success.html?plan=xxx)
+ * Official Stripe Payment Links for Pavilion QR Pro
+ * Single unified pricing: US$59 / year ($59.00/yr)
  */
-export const STRIPE_LINKS = {
-  starter: 'https://buy.stripe.com/aFa5kEaRLaG6eIK8UobbG00',
-  pro: 'https://buy.stripe.com/4gM6oI9NHeWmdEGfiMbbG01',
-  ultra: 'https://buy.stripe.com/aFa00kf81cOe4463A4bbG02',
-} as const;
+import { getStoredStripeLink } from './storage';
+
+export const STRIPE_LINKS: Record<'annual' | 'starter' | 'pro' | 'ultra', string> = {
+  annual: 'https://buy.stripe.com/cNifZi4tnbKagQSc6AbbG07',
+  starter: 'https://buy.stripe.com/cNifZi4tnbKagQSc6AbbG07',
+  pro: 'https://buy.stripe.com/cNifZi4tnbKagQSc6AbbG07',
+  ultra: 'https://buy.stripe.com/cNifZi4tnbKagQSc6AbbG07',
+};
 
 export interface StripePlan {
-  id: 'starter' | 'pro' | 'ultra';
+  id: 'annual' | 'starter' | 'pro' | 'ultra';
   name: string;
   price: string;
   period: string;
@@ -23,92 +26,78 @@ export interface StripePlan {
 
 export const STRIPE_PLANS: readonly StripePlan[] = [
   {
-    id: 'starter',
-    name: 'Starter',
-    price: 'RM59',
-    period: '/月',
-    description: '每月自动扣款 · 100次扫描/月 · 适合个人自由职业者',
-    badge: '入门订阅版',
-    popular: false,
-    link: STRIPE_LINKS.starter,
-    scanLimit: '100次扫描/月',
-    features: [
-      '每月 100 次极速 OCR 智能扫描',
-      '月度自动续订 (Monthly Subscription)',
-      '高精度单据发票文字识别',
-      '无限制随时管理与取消订阅',
-      '纯净轻量无PDF极速体验',
-      '100% 本地运算，0 隐私泄露',
-    ],
-  },
-  {
-    id: 'pro',
-    name: 'Pro',
-    price: 'RM159',
-    period: '/月',
-    description: '每月自动扣款 · 500次扫描/月 · 支持导出 Excel / Resit',
-    badge: '最受欢迎 · 会计财务首选',
+    id: 'annual',
+    name: 'Pavilion QR Pro VIP',
+    price: 'US$59',
+    period: '/年',
+    description: '年度尊享订阅 · US$59/年 · 解锁全部无限扫码与高清制码特权',
+    badge: '年度尊享版 (US$59/年)',
     popular: true,
-    link: STRIPE_LINKS.pro,
-    scanLimit: '500次扫描/月',
+    link: 'https://buy.stripe.com/cNifZi4tnbKagQSc6AbbG07',
+    scanLimit: '无限次扫码',
     features: [
-      '每月 500 次极速 OCR 智能扫描',
-      '月度自动续订 (Monthly Subscription)',
-      '包含 Starter 所有扫描功能',
-      '导出 Excel 格式明细表',
-      '导出 Resit / 商业收据凭证',
-      '发票单据自动结构化解析',
-    ],
-  },
-  {
-    id: 'ultra',
-    name: 'Ultra',
-    price: 'RM299',
-    period: '/月',
-    description: '每月自动扣款 · 无限次扫描 · 导出 SQL Acc Sheet',
-    badge: '企业旗舰版',
-    popular: false,
-    link: STRIPE_LINKS.ultra,
-    scanLimit: '无限次扫描',
-    features: [
-      '无限次极速 OCR 批量识别',
-      '月度自动续订 (Monthly Subscription)',
-      '包含 Pro 所有导出权益 (Excel + Resit)',
-      '导出 SQL Acc Sheet (SQL Accounting 导入表)',
-      '企业级批量扫描与流水线导出',
-      'VIP 专属技术服务与优先通道',
+      '无限次极速相机扫码与相册图片解码 (QR & 条形码)',
+      '高清 4K 矢量二维码制作生成 (网址 / Wi-Fi / 名片 / 社交)',
+      '批量快速连续扫描模式与暗光手电筒辅助',
+      '扫描与生成历史记录加密本地持久化',
+      '一键导出 CSV / JSON / TXT 数据明细',
+      '100% 设备端侧本地运算，0 字节上传云端，隐私零泄露',
+      '支持多设备随时解约与无忧管理',
     ],
   },
 ] as const;
 
-import { getStoredStripeLink } from './storage';
-
 /**
- * Default paywall link or plan-specific Stripe link
- * Checks user custom link from settings first, then falls back to official links
+ * Returns current Stripe payment link for Pavilion QR Pro.
+ * Rejects any legacy DocuMorph OCR links or outdated test links.
  */
-export function getStripeCheckoutUrl(planId: 'starter' | 'pro' | 'ultra' = 'starter'): string {
+export function getStripeCheckoutUrl(_planId?: string): string {
   const custom = getStoredStripeLink();
-  if (custom && planId === 'starter') {
+  if (custom && !custom.includes('aFa5kEaRLaG6eIK8UobbG00') && !custom.includes('00wcN69NHdSifMOb2wbbG06')) {
     return custom;
   }
-  return STRIPE_LINKS[planId] || STRIPE_LINKS.starter;
+  if (STRIPE_LINKS.annual && !STRIPE_LINKS.annual.includes('aFa5kEaRLaG6eIK8UobbG00') && !STRIPE_LINKS.annual.includes('00wcN69NHdSifMOb2wbbG06')) {
+    return STRIPE_LINKS.annual;
+  }
+  return 'https://buy.stripe.com/cNifZi4tnbKagQSc6AbbG07';
 }
 
 /**
- * Direct Stripe redirect with Meta Pixel checkout initiation
+ * Checks if a valid, active Stripe link is configured
  */
-export function redirectToStripe(planId: 'starter' | 'pro' | 'ultra' = 'starter', priceNum = 59): void {
+export function hasValidStripeLink(): boolean {
+  return Boolean(getStripeCheckoutUrl());
+}
+
+/**
+ * Direct Stripe redirect with Meta Pixel checkout initiation.
+ * Returns true if redirect initiated, false if no link is configured.
+ */
+export function redirectToStripe(_planId = 'annual', priceNum = 59): boolean {
   if (typeof window !== 'undefined') {
+    const checkoutUrl = getStripeCheckoutUrl();
+    if (!checkoutUrl) {
+      return false;
+    }
+
     const fbqObj = (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq;
     if (fbqObj) {
       fbqObj('track', 'InitiateCheckout', {
         value: priceNum,
-        currency: 'MYR',
-        content_name: `Pavilion QR Pro ${planId.toUpperCase()}`,
+        currency: 'USD',
+        content_name: 'Pavilion QR Pro Annual VIP ($59/yr)',
       });
     }
-    const checkoutUrl = getStripeCheckoutUrl(planId);
-    window.location.href = checkoutUrl;
+
+    try {
+      const opened = window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+      if (!opened) {
+        window.location.href = checkoutUrl;
+      }
+    } catch {
+      window.location.href = checkoutUrl;
+    }
+    return true;
   }
+  return false;
 }

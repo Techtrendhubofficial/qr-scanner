@@ -108,7 +108,7 @@ export function exportToReceipt(items: QRItem[], filename = 'Pavilion_QR_Pro_Res
 /**
  * 导出 SQL Acc Sheet (专为马来西亚 SQL Accounting / SQL Financial 格式导入设计)
  */
-export function exportToSQLAccSheet(items: QRItem[], filename = 'DocuMorphOCR_SQL_Acc_Import.csv') {
+export function exportToSQLAccSheet(items: QRItem[], filename = 'Pavilion_QR_Pro_SQL_Acc_Import.csv') {
   if (!items.length) {
     alert('暂无扫描记录可导出为 SQL Acc Sheet');
     return;
@@ -159,7 +159,7 @@ export function exportToSQLAccSheet(items: QRItem[], filename = 'DocuMorphOCR_SQ
       cleanField(totalAmount),
       cleanField('MYR'),
       cleanField('PAID'),
-      cleanField('Imported via DocuMorphOCR'),
+      cleanField('Imported via Pavilion QR Pro'),
     ].join(',');
   });
 

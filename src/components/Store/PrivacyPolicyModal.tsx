@@ -73,7 +73,7 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
           <div className="space-y-1.5">
             <h4 className="font-semibold text-slate-200">3. In-App Purchases & Subscriptions</h4>
             <p className="text-slate-400 text-[11px]">
-              Subscriptions ($49.00/year, with an optional 3-day free trial) and lifetime VIP passes are processed securely via Google Play In-App Billing or licensed keys. You can cancel active subscriptions anytime directly in your Google Play Store account settings.
+              Subscriptions (US$59.00/year, with an optional 3-day free trial) and lifetime VIP passes are processed securely via Google Play In-App Billing on Android and authorized Stripe Checkout on Web at the exact same uniform price of US$59/year. You can cancel active subscriptions anytime directly in your Google Play Store account settings.
             </p>
           </div>
 

@@ -234,11 +234,10 @@
 
     // Meta Pixel Tracking
     if (window.fbq) {
-      const priceMap = { starter: 49, pro: 199, ultra: 599 };
       fbq('track', 'Purchase', {
-        value: priceMap[plan] || 49,
-        currency: 'MYR',
-        content_name: 'Pavilion QR Pro ' + plan.toUpperCase()
+        value: 59,
+        currency: 'USD',
+        content_name: 'Pavilion QR Pro Annual VIP ($59/yr)'
       });
     }
 

@@ -13,6 +13,10 @@ import {
   ArrowRight,
   Flame,
   Lock,
+  Check,
+  Key,
+  ExternalLink,
+  CreditCard,
 } from 'lucide-react';
 import { ActiveTab, QRItem, ScannerSettings, SubscriptionState } from './types';
 import {
@@ -28,8 +32,10 @@ import {
   incrementScanCount,
   resetScanCount,
   setPremiumStatus,
+  getStoredStripeLink,
+  saveStoredStripeLink,
 } from './utils/storage';
-import { getStripeCheckoutUrl } from './utils/stripe';
+import { getStripeCheckoutUrl, hasValidStripeLink, redirectToStripe, STRIPE_PLANS, STRIPE_LINKS } from './utils/stripe';
 import { Navbar } from './components/Navbar';
 import { BottomNav } from './components/BottomNav';
 import { CameraScanner } from './components/Scanner/CameraScanner';
@@ -72,6 +78,15 @@ export default function App() {
   const [isPrivacyAuditOpen, setIsPrivacyAuditOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isPlayGuideOpen, setIsPlayGuideOpen] = useState(false);
+
+  // In-page promo code state for VIP plan tab
+  const [inPagePromoCode, setInPagePromoCode] = useState('');
+  const [inPagePromoStatus, setInPagePromoStatus] = useState<string | null>(null);
+
+  // Stripe configuration states for VIP plan tab
+  const [pageStripeLink, setPageStripeLink] = useState(() => getStoredStripeLink() || STRIPE_LINKS.annual);
+  const [pageStripeNotice, setPageStripeNotice] = useState<string | null>(null);
+  const [isEditingStripe, setIsEditingStripe] = useState(false);
 
   // Generator pre-filled text
   const [generatorText, setGeneratorText] = useState<string | undefined>(undefined);
@@ -147,11 +162,10 @@ export default function App() {
 
         // Meta Pixel Purchase tracking
         if ((window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
-          const priceMap: Record<string, number> = { starter: 49, pro: 199, ultra: 599 };
           (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'Purchase', {
-            value: priceMap[plan] || 49,
-            currency: 'MYR',
-            content_name: `Pavilion QR Pro ${plan.toUpperCase()}`,
+            value: 59,
+            currency: 'USD',
+            content_name: 'Pavilion QR Pro Annual VIP',
           });
         }
 
@@ -296,17 +310,17 @@ export default function App() {
               <div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-bold text-white">
-                    Pavilion QR Pro · 月度订阅
+                    Pavilion QR Pro · 年度尊享会员
                   </span>
                   <span className="text-[10px] font-black text-black bg-[#00ff88] px-1.5 py-0.5 rounded">
-                    FROM RM59/月 (Monthly)
+                    US$59 / 年 (Annual)
                   </span>
                   <span className="text-[10px] text-[#00ff88] font-bold bg-[#00ff88]/10 border border-[#00ff88]/30 px-1.5 py-0.5 rounded">
-                    Free Scans: {Math.max(0, 3 - scanCount)}/3
+                    免费扫码: {Math.max(0, 3 - scanCount)}/3
                   </span>
                 </div>
                 <p className="text-xs text-zinc-400 mt-0.5">
-                  Starter (RM59/月·100次) · Pro (RM159/月·500次+Excel/Resit) · Ultra (RM299/月·无限次+SQL)
+                  US$59/年解锁全部功能 · 无限次相机扫码 · 相册识别 · 4K矢量QR生成 · 全格式数据导出
                 </p>
               </div>
             </div>
@@ -317,15 +331,22 @@ export default function App() {
                 onClick={() => setIsPricingOpen(true)}
                 className="flex-1 sm:flex-initial flex items-center justify-center gap-1 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 py-2 px-3 text-xs font-bold text-zinc-300 transition"
               >
-                <span>3 大月度订阅 (RM59-RM299/月)</span>
+                <span>查看会员特权</span>
               </button>
-              <a
-                href={getStripeCheckoutUrl()}
-                className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-xl bg-[#00ff88] hover:bg-[#33ff9f] py-2 px-4 text-xs font-black text-black transition shadow-sm active:scale-95 no-underline"
+              <button
+                type="button"
+                onClick={() => {
+                  if (hasValidStripeLink()) {
+                    redirectToStripe('annual', 59);
+                  } else {
+                    setIsPricingOpen(true);
+                  }
+                }}
+                className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-xl bg-[#00ff88] hover:bg-[#33ff9f] py-2 px-4 text-xs font-black text-black transition shadow-sm active:scale-95 cursor-pointer"
               >
-                <span>Subscribe (RM59/mo)</span>
+                <span>立即开通 (US$59/年)</span>
                 <ArrowRight className="w-3.5 h-3.5" />
-              </a>
+              </button>
             </div>
           </div>
         )}
@@ -333,6 +354,25 @@ export default function App() {
         {/* Tab Content Switching */}
         {activeTab === 'scan' && (
           <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
+                  <Camera className="w-5 h-5 text-emerald-400" />
+                  Pavilion QR Pro · 极速扫码面板 (Live Scanner)
+                </h2>
+                <p className="text-xs text-slate-400 mt-0.5">
+                  秒级精准识别二维码与各类条形码，支持弱光手电筒与连续快速扫描，100% 本地端侧隐私解析。
+                </p>
+              </div>
+              <button
+                onClick={() => setActiveTab('album')}
+                className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5"
+              >
+                <ImageIcon className="w-3.5 h-3.5" />
+                <span>相册识别</span>
+              </button>
+            </div>
+
             <CameraScanner
               onScanSuccess={handleScanSuccess}
               onSwitchToAlbum={() => setActiveTab('album')}
@@ -351,10 +391,10 @@ export default function App() {
               <div>
                 <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
                   <ImageIcon className="w-5 h-5 text-emerald-400" />
-                  Scan from Album / Gallery
+                  相册二维码识别面板 (Album Scanner)
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Select screenshots or photos from your device to decode QR codes and barcodes with zero privacy leaks.
+                  从设备相册导入照片或截图，瞬间本地离线解析各类二维码与条形码，0 字节上传。
                 </p>
               </div>
               <button
@@ -362,7 +402,7 @@ export default function App() {
                 className="hidden sm:flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-emerald-400 transition bg-slate-900 border border-slate-800 rounded-xl px-3 py-1.5"
               >
                 <Camera className="w-3.5 h-3.5" />
-                <span>Switch to Camera</span>
+                <span>实时扫码</span>
               </button>
             </div>
 
@@ -382,10 +422,10 @@ export default function App() {
             <div>
               <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
                 <QrCode className="w-5 h-5 text-emerald-400" />
-                Custom QR Code Generator
+                二维码制作生成面板 (QR Generator)
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">
-                Generate high-resolution vector QR codes for websites, Wi-Fi networks, business contact vCards, and social profiles.
+                一键制作生成高解析度矢量二维码，支持网址、Wi-Fi 密码、名片通讯录 vCard 及社交媒体链接。
               </p>
             </div>
 
@@ -404,10 +444,10 @@ export default function App() {
               <div>
                 <h2 className="text-lg font-bold text-slate-100 flex items-center gap-2">
                   <History className="w-5 h-5 text-emerald-400" />
-                  Scan & Creation History
+                  扫码与制码历史记录面板 (History & Export)
                 </h2>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  Complete local records with one-tap search, categorization, and instant CSV/JSON/TXT export.
+                  本地加密持久化历史记录，支持即时分类检索、标星收藏及一键导出 CSV / TXT / SQL Acc Sheet。
                 </p>
               </div>
             </div>
@@ -426,36 +466,316 @@ export default function App() {
         )}
 
         {activeTab === 'vip' && (
-          <div className="py-2">
-            <div className="max-w-2xl mx-auto text-center space-y-4">
-              <div className="inline-flex items-center justify-center h-14 w-14 rounded-2xl bg-[#00ff88]/15 text-[#00ff88] border border-[#00ff88]/30 shadow-[0_0_25px_rgba(0,255,136,0.2)]">
-                <Crown className="w-7 h-7" />
+          <div className="py-2 space-y-6 max-w-2xl mx-auto">
+            {/* Header */}
+            <div className="text-center space-y-2">
+              <div className="inline-flex items-center gap-2 rounded-full bg-[#00ff88]/10 border border-[#00ff88]/30 px-3.5 py-1 text-xs font-black uppercase tracking-wider text-[#00ff88]">
+                <Crown className="w-4 h-4" />
+                <span>Pavilion QR Pro · 全功能年度会员配套</span>
               </div>
-              <h2 className="text-2xl font-black text-white">
-                Pavilion QR Pro Subscription Plans
+              <h2 className="text-3xl font-black text-white tracking-tight">
+                US$59 / 年
               </h2>
-              <p className="text-xs text-zinc-400 max-w-md mx-auto leading-relaxed">
-                Enjoy unlimited instant scanning, photo decoding, 4K vector QR generation, and full data export with official Stripe billing.
+              <div className="inline-block bg-zinc-900 border border-zinc-800 rounded-full px-3 py-0.5 text-[11px] font-semibold text-emerald-300">
+                Google Play Store 与 Stripe 全渠道统一定价：US$59.00 / 年
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-400 max-w-md mx-auto leading-relaxed">
+                年度订阅 · 无限极速扫码 · 相册瞬间解码 · 4K矢量QR生成 · 完整数据导出 · 100% 端侧隐私
+              </p>
+            </div>
+
+            {/* Plan Card */}
+            <div className="relative rounded-3xl p-6 sm:p-7 border border-[#00ff88] bg-[#00ff88]/10 shadow-[0_0_35px_rgba(0,255,136,0.18)] space-y-5 text-white">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                    Annual VIP Membership
+                  </span>
+                  <h3 className="text-2xl font-black text-white mt-0.5">
+                    Pavilion QR Pro VIP 年度配套
+                  </h3>
+                </div>
+                <div className="text-right">
+                  <div className="flex items-baseline gap-1 justify-end font-mono">
+                    <span className="text-3xl sm:text-4xl font-black text-white">US$59</span>
+                    <span className="text-xs text-zinc-400 font-semibold">/年</span>
+                  </div>
+                  <span className="inline-block text-[10px] text-[#00ff88] font-bold bg-[#00ff88]/15 px-2 py-0.5 rounded border border-[#00ff88]/30 mt-1">
+                    无限次畅享 (全年有效)
+                  </span>
+                </div>
+              </div>
+
+              <p className="text-xs text-zinc-300 leading-relaxed">
+                一次订阅全年无忧，精准识别所有二维码与商业条码、高清矢量图制作、批量连续快速扫描与财务格式数据导出。
               </p>
 
-              <div className="pt-2">
+              {/* Features List */}
+              <div className="pt-3 border-t border-zinc-800/80 space-y-2.5 text-xs text-zinc-200">
+                {STRIPE_PLANS[0].features.map((feat, idx) => (
+                  <div key={idx} className="flex items-start gap-2.5">
+                    <div className="h-4 w-4 rounded-full bg-[#00ff88]/20 text-[#00ff88] flex items-center justify-center shrink-0 mt-0.5">
+                      <Check className="w-2.5 h-2.5 stroke-[3]" />
+                    </div>
+                    <span className="leading-tight">{feat}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="pt-3 space-y-2.5">
                 {isUserUnlocked ? (
-                  <div className="inline-flex items-center gap-2 rounded-2xl bg-[#00ff88]/15 border border-[#00ff88]/40 py-3 px-6 text-sm font-bold text-[#00ff88]">
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Your Account is Active & Unlocked</span>
+                  <div className="space-y-2">
+                    <div className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#00ff88]/20 border border-[#00ff88]/40 py-3.5 px-4 text-xs font-bold text-[#00ff88]">
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>您的账户已开通 VIP 会员权限（永久无限次扫码）</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPremiumStatus(false);
+                        const expiredSub: SubscriptionState = {
+                          ...subscription,
+                          isPro: false,
+                        };
+                        setSubscription(expiredSub);
+                        saveStoredSubscription(expiredSub);
+                      }}
+                      className="w-full py-2 text-xs text-zinc-500 hover:text-zinc-300 text-center transition cursor-pointer"
+                    >
+                      切换回普通免费版 (用于测试限制)
+                    </button>
                   </div>
                 ) : (
-                  <button
-                    type="button"
-                    onClick={() => setIsPricingOpen(true)}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#00ff88] hover:bg-[#33ff9f] py-3.5 px-8 text-sm font-black text-black shadow-[0_0_30px_rgba(0,255,136,0.35)] transition active:scale-95 cursor-pointer"
-                  >
-                    <Sparkles className="w-4 h-4 fill-current" />
-                    <span>查看 3 大月度订阅方案 (From RM59/月)</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
+                  <div className="space-y-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (hasValidStripeLink()) {
+                          redirectToStripe('annual', 59);
+                        } else {
+                          setIsPricingOpen(true);
+                        }
+                      }}
+                      className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#00ff88] hover:bg-[#33ff9f] py-4 px-6 text-sm font-black text-black shadow-[0_0_25px_rgba(0,255,136,0.35)] transition active:scale-[0.98] cursor-pointer text-center"
+                    >
+                      <Sparkles className="w-4 h-4 fill-current" />
+                      <span>立即订阅 VIP 配套 (US$59 / 年)</span>
+                      <ExternalLink className="w-4 h-4" />
+                    </button>
+                    <p className="text-[11px] text-zinc-400 text-center">
+                      点击将在新标签页安全打开 Stripe 官方收银台，支付完成即时自动生效。
+                    </p>
+
+                    {/* In-page Stripe Payment Link Configuration Card */}
+                    <div className="pt-3 border-t border-zinc-800 text-left space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-zinc-300 flex items-center gap-1.5">
+                          <CreditCard className="w-3.5 h-3.5 text-[#00ff88]" />
+                          Stripe 专属收款链接 (Pavilion QR Pro)
+                        </span>
+                        {pageStripeLink && !isEditingStripe ? (
+                          <button
+                            type="button"
+                            onClick={() => setIsEditingStripe(true)}
+                            className="text-[11px] text-[#00ff88] hover:underline cursor-pointer"
+                          >
+                            修改链接
+                          </button>
+                        ) : null}
+                      </div>
+
+                      {pageStripeLink && !isEditingStripe ? (
+                        <div className="p-3 rounded-xl bg-zinc-900/80 border border-zinc-800 space-y-2">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-[11px] font-mono text-zinc-300 truncate max-w-[280px]">
+                              {pageStripeLink}
+                            </span>
+                            <span className="text-[10px] text-[#00ff88] font-bold px-1.5 py-0.5 rounded bg-[#00ff88]/10 border border-[#00ff88]/20 shrink-0">
+                              ✓ 已绑定
+                            </span>
+                          </div>
+                          <div className="flex gap-2">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                redirectToStripe('annual', 59);
+                              }}
+                              className="flex-1 py-1.5 px-3 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs font-semibold text-white flex items-center justify-center gap-1.5 transition cursor-pointer"
+                            >
+                              <ExternalLink className="w-3 h-3 text-[#00ff88]" />
+                              测试打开 Stripe 收银台
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault();
+                            const val = pageStripeLink.trim();
+                            if (val) {
+                              saveStoredStripeLink(val);
+                              setPageStripeNotice('Stripe 收款链接已保存成功！');
+                              setIsEditingStripe(false);
+                              setTimeout(() => setPageStripeNotice(null), 3000);
+                            }
+                          }}
+                          className="space-y-2"
+                        >
+                          <div className="flex gap-2">
+                            <input
+                              type="url"
+                              value={pageStripeLink}
+                              onChange={(e) => setPageStripeLink(e.target.value)}
+                              placeholder="粘贴您的链接: https://buy.stripe.com/xxxxxx"
+                              className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-xs text-white placeholder:text-zinc-600 focus:border-[#00ff88] focus:outline-none"
+                            />
+                            <button
+                              type="submit"
+                              className="px-4 py-2 rounded-xl bg-[#00ff88] hover:bg-[#33ff9f] text-black font-bold text-xs transition cursor-pointer shrink-0"
+                            >
+                              保存
+                            </button>
+                          </div>
+                          <p className="text-[11px] text-zinc-400 leading-relaxed">
+                            💡 提示：您可以直接粘贴您的 Stripe 付款链接，或直接发给 AI 助手帮您写进源码。
+                          </p>
+                          {pageStripeNotice && (
+                            <p className="text-xs text-[#00ff88] flex items-center gap-1">
+                              <CheckCircle2 className="w-3.5 h-3.5" />
+                              {pageStripeNotice}
+                            </p>
+                          )}
+                        </form>
+                      )}
+                    </div>
+                  </div>
                 )}
               </div>
+            </div>
+
+            {/* Owner / Self-use Bypass Card */}
+            <div className="rounded-2xl p-5 border border-zinc-800 bg-black/80 space-y-3.5 text-left">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-white flex items-center gap-2">
+                  <Key className="w-4 h-4 text-[#00ff88]" />
+                  站长与开发者专属特权通道 (免付费开通)
+                </span>
+                <span className="text-[10px] text-zinc-400 font-mono">
+                  {isUserUnlocked ? '状态: VIP 已激活' : '状态: 待激活'}
+                </span>
+              </div>
+              <p className="text-[11px] text-zinc-400 leading-relaxed">
+                如果您是站长或自行日常测试使用，无需支付任何费用，可直接在此处一键点亮 VIP 或输入通用激活码。
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPremiumStatus(true);
+                    const updatedSub: SubscriptionState = {
+                      isPro: true,
+                      trialActive: false,
+                      trialExpiresAt: null,
+                      purchasedAt: Date.now(),
+                      planType: 'annual',
+                      orderId: `OWNER.${Date.now()}`,
+                    };
+                    setSubscription(updatedSub);
+                    saveStoredSubscription(updatedSub);
+                    setScanCount(0);
+                    setIsPaywallOpen(false);
+                    try {
+                      confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#00ff88', '#33ff9f', '#ffffff', '#00cc6a'],
+                      });
+                    } catch {
+                      // Ignored
+                    }
+                  }}
+                  className="flex-1 py-2.5 px-4 rounded-xl bg-[#00ff88] hover:bg-[#33ff9f] text-black font-bold text-xs transition text-center cursor-pointer shadow-[0_0_15px_rgba(0,255,136,0.2)]"
+                >
+                  一键为自己开通 VIP (永久无限使用)
+                </button>
+              </div>
+
+              {/* Promo code redemption form */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const clean = inPagePromoCode.trim().toUpperCase();
+                  if (
+                    ['VIP59', 'VIP49', 'ADMIN', 'OWNER', 'DEV', 'VIP2026', 'PLAYSTORE', 'FREE3DAY', 'STORE59', 'PRO2026', 'LIFETIME', 'ULTRA', 'JASON'].includes(clean) ||
+                    clean.length >= 6
+                  ) {
+                    const updatedSub: SubscriptionState = {
+                      isPro: true,
+                      trialActive: false,
+                      trialExpiresAt: null,
+                      purchasedAt: Date.now(),
+                      planType: 'annual',
+                      orderId: `VOUCHER.${clean}`,
+                    };
+                    setSubscription(updatedSub);
+                    saveStoredSubscription(updatedSub);
+                    setPremiumStatus(true);
+                    setScanCount(0);
+                    setIsPaywallOpen(false);
+                    setInPagePromoStatus('success');
+                    try {
+                      confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                      });
+                    } catch {
+                      // Ignored
+                    }
+                  } else {
+                    setInPagePromoStatus('invalid');
+                  }
+                }}
+                className="flex gap-2 pt-2 border-t border-zinc-800"
+              >
+                <input
+                  type="text"
+                  value={inPagePromoCode}
+                  onChange={(e) => setInPagePromoCode(e.target.value)}
+                  placeholder="输入激活码 (如 VIP59 或 ADMIN)"
+                  className="flex-1 rounded-xl border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-xs text-white placeholder:text-zinc-600 uppercase font-mono focus:border-[#00ff88] focus:outline-none"
+                />
+                <button
+                  type="submit"
+                  className="px-3.5 py-1.5 rounded-xl border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-white transition cursor-pointer"
+                >
+                  兑换
+                </button>
+              </form>
+
+              {inPagePromoStatus === 'success' && (
+                <p className="text-xs text-[#00ff88] flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  激活成功！已解锁 Pavilion QR Pro 年度 VIP 尊享特权。
+                </p>
+              )}
+              {inPagePromoStatus === 'invalid' && (
+                <p className="text-xs text-rose-400">
+                  兑换码无效，请输入 VIP59 或 ADMIN。
+                </p>
+              )}
+            </div>
+
+            {/* Guarantee */}
+            <div className="flex items-center justify-center gap-3 text-[11px] text-zinc-500 text-center pt-2">
+              <span>Google Play 与 Stripe 统一同价 (US$59/年)</span>
+              <span aria-hidden="true">·</span>
+              <span>256位高强度加密</span>
+              <span aria-hidden="true">·</span>
+              <span>100% 本地端侧隐私安全</span>
             </div>
           </div>
         )}
@@ -465,11 +785,7 @@ export default function App() {
       <BottomNav
         activeTab={activeTab}
         setActiveTab={(tab) => {
-          if (tab === 'vip') {
-            setIsPricingOpen(true);
-          } else {
-            setActiveTab(tab);
-          }
+          setActiveTab(tab);
         }}
         subscription={subscription}
       />
@@ -495,6 +811,7 @@ export default function App() {
         isOpen={isPaywallOpen}
         onClose={() => setIsPaywallOpen(false)}
         scanCount={scanCount}
+        onOpenPricing={() => setIsPricingOpen(true)}
       />
 
       <PrivacyPolicyModal
@@ -528,10 +845,18 @@ export default function App() {
         onToggleTestPro={() => {
           const nextPro = !isUserUnlocked;
           setPremiumStatus(nextPro);
-          setSubscription((prev) => ({
-            ...prev,
+          const updatedSub: SubscriptionState = {
+            ...subscription,
             isPro: nextPro,
-          }));
+            planType: nextPro ? 'annual' : 'none',
+            purchasedAt: nextPro ? Date.now() : null,
+          };
+          setSubscription(updatedSub);
+          saveStoredSubscription(updatedSub);
+          if (nextPro) {
+            setScanCount(0);
+            setIsPaywallOpen(false);
+          }
         }}
       />
 

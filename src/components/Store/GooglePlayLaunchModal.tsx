@@ -126,7 +126,7 @@ export const GooglePlayLaunchModal: React.FC<GooglePlayLaunchModalProps> = ({
             { id: 'testing', label: '★ 测试员政策 & 生成测试APK' },
             { id: 'methods', label: '1. 打包方式 (AAB生成)' },
             { id: 'metadata', label: '2. 商店上架文案 (Copy-Paste)' },
-            { id: 'billing', label: '3. $49 订阅与3天试用配置' },
+            { id: 'billing', label: '3. US$59/年 订阅配置' },
             { id: 'checklist', label: '4. 审核合规清单' },
           ].map((tab) => (
             <button
@@ -472,7 +472,7 @@ export const GooglePlayLaunchModal: React.FC<GooglePlayLaunchModalProps> = ({
                 </div>
 
                 <p className="text-slate-200 text-xs leading-relaxed">
-                  按照您的指令：应用已升级为 <strong>Pavilion QR Pro (月度订阅)</strong>，版本号已升级至 <code>versionCode: 4</code> (versionName: 1.0.3)，官方域名保持为 <code>qr.pavilionventure.com</code>，完全转换为 Google Play Subscriptions (Starter RM59/月、Pro RM159/月、Ultra RM299/月)。
+                  按照您的指令：应用已升级为 <strong>Pavilion QR Pro (年度尊享版)</strong>，版本号已升级至 <code>versionCode: 4</code> (versionName: 1.0.3)，官方域名保持为 <code>qr.pavilionventure.com</code>，配置为单一 Google Play 年度订阅 (US$59/年，全功能畅享)。
                 </p>
 
                 <div className="flex flex-col sm:flex-row gap-2 pt-1">
@@ -624,11 +624,11 @@ export const GooglePlayLaunchModal: React.FC<GooglePlayLaunchModalProps> = ({
               {/* Full Description */}
               <div className="rounded-xl border border-slate-800 bg-slate-950/60 p-3.5 space-y-2">
                 <div className="flex items-center justify-between text-slate-400 text-[11px]">
-                  <span>完整说明 (Full Description - 包含核心功能与月度订阅价格)</span>
+                  <span>完整说明 (Full Description - 包含核心功能与年度订阅价格)</span>
                   <button
                     onClick={() =>
                       handleCopy(
-                        `【为什么选择 Pavilion QR Pro？】\nPavilion QR Pro 专为极致速度与商业凭据导出设计，纯净无广告，按月自动订阅，按需随时解约！\n\n【核心功能】\n1. 极速扫码识别：精准识别所有类型二维码与条形码，支持暗光手电筒与自动连续扫描。\n2. 相册瞬间解码：零泄漏本地离线解析手机相册与截图中的各类二维码与条形码。\n3. 高清矢量码制作：一键生成网址、Wi-Fi、名片、社交媒体专属 4K 矢量二维码。\n4. 凭证报表导出：支持一键导出 Excel 明细、商业收据 Resit 及 SQL Acc Sheet 格式。\n5. 100% 本地端侧隐私：0 字节上传云端，零留存防栽赃，符合 PDPA / GDPR 标准。\n\n【月度订阅方案 (Monthly Subscription)】\n· Starter: RM59/月 (100次扫描/月)\n· Pro: RM159/月 (500次扫描/月 + 导出 Excel/Resit)\n· Ultra: RM299/月 (无限次扫描 + 导出 SQL Acc Sheet)\n类型：Monthly Subscription (每月自动扣)\n官方门户：https://qr.pavilionventure.com\n隐私权政策：https://qr.pavilionventure.com/privacy.html`,
+                        `【为什么选择 Pavilion QR Pro？】\nPavilion QR Pro 专为极致速度与商业凭据导出设计，纯净无广告，单一透明年度订阅 (US$59/年)，按需随时解约！\n\n【核心功能】\n1. 极速扫码识别：精准识别所有类型二维码与条形码，支持暗光手电筒与自动连续扫描。\n2. 相册瞬间解码：零泄漏本地离线解析手机相册与截图中的各类二维码与条形码。\n3. 高清矢量码制作：一键生成网址、Wi-Fi、名片、社交媒体专属 4K 矢量二维码。\n4. 凭证报表导出：支持一键导出 CSV、JSON、TXT 及 SQL Acc Sheet 格式。\n5. 100% 本地端侧隐私：0 字节上传云端，零留存防栽赃，符合 PDPA / GDPR 标准。\n\n【年度订阅方案 (Annual Subscription)】\n· Pavilion QR Pro VIP: US$59/年 (Annual VIP - 解锁全部无限扫码特权)\n类型：Annual Subscription (按年订阅扣款)\n官方门户：https://qr.pavilionventure.com\n隐私权政策：https://qr.pavilionventure.com/privacy.html`,
                         'meta-full'
                       )
                     }
@@ -639,20 +639,18 @@ export const GooglePlayLaunchModal: React.FC<GooglePlayLaunchModalProps> = ({
                 </div>
                 <div className="text-[11px] text-slate-300 max-h-40 overflow-y-auto font-mono whitespace-pre-wrap leading-relaxed bg-slate-950 p-2.5 rounded-lg border border-slate-800">
 {`【为什么选择 Pavilion QR Pro？】
-Pavilion QR Pro 专为极致速度与商业凭据导出设计，纯净无广告，按月自动订阅，按需随时解约！
+Pavilion QR Pro 专为极致速度与商业凭据导出设计，纯净无广告，单一透明年度订阅 (US$59/年)，按需随时解约！
 
 【核心功能】
 1. 极速扫码识别：精准识别所有类型二维码与条形码，支持暗光手电筒与自动连续扫描。
 2. 相册瞬间解码：零泄漏本地离线解析手机相册与截图中的各类二维码与条形码。
 3. 高清矢量码制作：一键生成网址、Wi-Fi、名片、社交媒体专属 4K 矢量二维码。
-4. 凭证报表导出：支持一键导出 Excel 明细、商业收据 Resit 及 SQL Acc Sheet 格式。
+4. 凭证报表导出：支持一键导出 CSV、JSON、TXT 及 SQL Acc Sheet 格式。
 5. 100% 本地端侧隐私：0 字节上传云端，零留存防栽赃，符合 PDPA / GDPR 标准。
 
-【月度订阅方案 (Monthly Subscription)】
-· Starter: RM59/月 (100次扫描/月)
-· Pro: RM159/月 (500次扫描/月 + 导出 Excel/Resit)
-· Ultra: RM299/月 (无限次扫描 + 导出 SQL Acc Sheet)
-类型：Monthly Subscription (每月自动扣)
+【年度订阅方案 (Annual Subscription)】
+· Pavilion QR Pro VIP: US$59/年 (Annual VIP - 解锁全部无限扫码特权)
+类型：Annual Subscription (按年订阅扣款)
 官方门户：https://qr.pavilionventure.com
 隐私权政策：https://qr.pavilionventure.com/privacy.html`}
                 </div>
@@ -670,55 +668,30 @@ Pavilion QR Pro 专为极致速度与商业凭据导出设计，纯净无广告�
                 </span>
 
                 <div className="p-3 rounded-xl border border-emerald-500/30 bg-emerald-950/20 text-xs text-emerald-200 leading-relaxed space-y-1">
-                  <p className="font-bold text-emerald-300">📌 Google Play Console 最终配置操作指引：</p>
+                  <p className="font-bold text-emerald-300">📌 Google Play Console 与 Stripe 全渠道统一定价（US$59/年）：</p>
                   <ol className="list-decimal pl-4 space-y-1 text-slate-300">
                     <li>前往 <strong>Google Play Console &gt; Monetize (利用收益) &gt; Subscriptions (订阅)</strong>。</li>
-                    <li>点击 <strong>Create subscription (创建订阅)</strong>，分别创建以下 3 个月度订阅：</li>
-                    <li>计费周期类型选 <strong>Monthly Subscription (每月自动扣)</strong>。</li>
-                    <li>已删除所有一次性买断 (Managed Product / In-app product)，仅保留订阅！</li>
+                    <li>点击 <strong>Create subscription (创建订阅)</strong>，仅需创建 1 个统一年度订阅产品：</li>
+                    <li>计费周期类型选 <strong>Yearly / Annual (每年自动续订，建议提供 3 天试用)</strong>。</li>
+                    <li>定价严格设定为 <strong>US$ 59.00 / year</strong>（与官网 Stripe 保持同价同权）。</li>
+                    <li>订阅产品 ID 建议设定为：<code className="text-emerald-400 font-mono">pavilion_qr_annual_59</code>。</li>
                   </ol>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                  <div className="p-3.5 rounded-xl border border-slate-800 bg-slate-900 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-300">Starter 订阅</span>
-                      <span className="text-[10px] text-emerald-300 font-semibold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/60">按月扣款</span>
-                    </div>
-                    <div className="font-mono text-base font-black text-emerald-400">
-                      RM 59<span className="text-xs text-slate-400">/月</span>
-                    </div>
-                    <span className="text-[11px] text-slate-200 block font-semibold">100次扫描/月</span>
-                    <span className="text-[9px] text-slate-400 block font-mono bg-slate-950 p-1 rounded border border-slate-800 break-all">ID: documorph_sub_starter</span>
+                <div className="p-4 rounded-xl border border-emerald-500/40 bg-emerald-950/10 space-y-2 max-w-md">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-bold text-emerald-300">Pavilion QR Pro VIP 年度订阅</span>
+                    <span className="text-[10px] text-emerald-300 font-semibold bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/60">按年自动续订</span>
                   </div>
-
-                  <div className="p-3.5 rounded-xl border border-emerald-500/40 bg-emerald-950/10 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-emerald-300">Pro 订阅 (推荐)</span>
-                      <span className="text-[10px] text-emerald-300 font-semibold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/60">按月扣款</span>
-                    </div>
-                    <div className="font-mono text-base font-black text-emerald-400">
-                      RM 159<span className="text-xs text-slate-400">/月</span>
-                    </div>
-                    <span className="text-[11px] text-slate-200 block font-semibold">500次扫描/月 + Excel/Resit</span>
-                    <span className="text-[9px] text-slate-400 block font-mono bg-slate-950 p-1 rounded border border-slate-800 break-all">ID: documorph_sub_pro</span>
+                  <div className="font-mono text-xl font-black text-emerald-400">
+                    US$ 59.00<span className="text-xs text-slate-400">/年</span>
                   </div>
-
-                  <div className="p-3.5 rounded-xl border border-slate-800 bg-slate-900 space-y-1.5">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-slate-300">Ultra 旗舰订阅</span>
-                      <span className="text-[10px] text-emerald-300 font-semibold bg-emerald-950/60 px-1.5 py-0.5 rounded border border-emerald-800/60">按月扣款</span>
-                    </div>
-                    <div className="font-mono text-base font-black text-emerald-400">
-                      RM 299<span className="text-xs text-slate-400">/月</span>
-                    </div>
-                    <span className="text-[11px] text-slate-200 block font-semibold">无限次扫描 + SQL Acc</span>
-                    <span className="text-[9px] text-slate-400 block font-mono bg-slate-950 p-1 rounded border border-slate-800 break-all">ID: documorph_sub_ultra</span>
-                  </div>
+                  <span className="text-xs text-slate-200 block font-semibold">无限次扫码 + 4K矢量QR生成 + 全量数据导出</span>
+                  <span className="text-[10px] text-slate-400 block font-mono bg-slate-950 p-1.5 rounded border border-slate-800 break-all">Product ID: pavilion_qr_annual_59</span>
                 </div>
 
                 <div className="pt-2 text-slate-400 text-[11px] leading-relaxed border-t border-slate-800">
-                  官方门户网址：<code className="text-emerald-400">https://qr.pavilionventure.com</code> | 已遵循指令：PDF功能已完全移除，所有买断型 Managed Product 已清理。
+                  官方门户网址：<code className="text-emerald-400">https://qr.pavilionventure.com</code> | 已遵循指令：单一年度价格 US$59/年，纯净无广告，离线隐私 0 留存。
                 </div>
               </div>
             </div>

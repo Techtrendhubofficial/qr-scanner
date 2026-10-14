@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { X, Volume2, Smartphone, Layers, Copy, ExternalLink, RefreshCw, ShieldCheck, CreditCard, Check } from 'lucide-react';
+import { X, Volume2, Smartphone, Layers, Copy, ExternalLink, RefreshCw, ShieldCheck, CreditCard, Check, Crown } from 'lucide-react';
 import { ScannerSettings } from '../types';
 import { getStoredStripeLink, saveStoredStripeLink } from '../utils/storage';
+import { STRIPE_LINKS } from '../utils/stripe';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -28,13 +29,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   onToggleTestPro,
   onOpenPrivacyAudit,
 }) => {
-  const [stripeLink, setStripeLink] = useState('');
+  const [stripeLink, setStripeLink] = useState(() => getStoredStripeLink() || STRIPE_LINKS.annual);
   const [linkSaved, setLinkSaved] = useState(false);
   const [testNotice, setTestNotice] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
-      setStripeLink(getStoredStripeLink());
+      setStripeLink(getStoredStripeLink() || STRIPE_LINKS.annual);
     }
   }, [isOpen]);
 
@@ -181,57 +182,60 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               </button>
             </form>
             <p className="text-[10px] text-slate-400">
-              设置后，网页端点击订阅即可直接调用您的专属 Stripe 页面进行全球收款。
+              已彻底清除旧的 DocuMorph OCR 链接。请粘贴为 <strong>Pavilion QR Pro (US$59/年)</strong> 创建的专属 Stripe 收款链接。设置后用户点击订阅即可直达您的收银台。
             </p>
           </div>
 
-          {/* QA & Test Debugging Tools */}
+          {/* QA & Owner VIP Debugging Tools */}
           <div className="p-3.5 rounded-2xl bg-black border border-zinc-800 space-y-2.5">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                <RefreshCw className="w-3.5 h-3.5 text-[#00ff88]" />
-                测试调试工具 (QA Test Tool)
+                <Crown className="w-3.5 h-3.5 text-[#00ff88]" />
+                站长与开发者特权通道 (Owner VIP)
               </span>
               <span className="text-[10px] font-mono text-[#00ff88]">
-                免费额度: {scanCount}/3 次
+                {isPro ? '已开通 VIP (无限扫码)' : `免费体验: ${scanCount}/3 次`}
               </span>
             </div>
 
-            <div className="flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  onResetScanCount?.();
-                  setTestNotice('已重置为 0/3 次！可以重新测试免费扫描');
-                  setTimeout(() => setTestNotice(null), 2500);
-                }}
-                className="flex-1 py-1.5 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-zinc-200 transition text-center"
-              >
-                重置免费次数 (0/3)
-              </button>
-
+            <div className="flex flex-col sm:flex-row gap-2">
               <button
                 type="button"
                 onClick={() => {
                   onToggleTestPro?.();
-                  setTestNotice(isPro ? '已取消 Pro，恢复免费测试' : '已激活 Pro VIP！');
-                  setTimeout(() => setTestNotice(null), 2500);
+                  setTestNotice(isPro ? '已切换为普通免费版（用于测试付款限制）' : '已成功为自己永久激活 VIP 尊享权限！');
+                  setTimeout(() => setTestNotice(null), 3000);
                 }}
-                className={`py-1.5 px-3 rounded-xl text-xs font-bold transition text-center ${
+                className={`py-2 px-3 rounded-xl text-xs font-bold transition text-center flex-1 ${
                   isPro
-                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
-                    : 'bg-[#00ff88]/20 text-[#00ff88] border border-[#00ff88]/40'
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30'
+                    : 'bg-[#00ff88] text-black hover:bg-[#33ff9f] shadow-[0_0_15px_rgba(0,255,136,0.25)]'
                 }`}
               >
-                {isPro ? '取消 Pro 权限' : '一键模拟 Pro'}
+                {isPro ? '取消 VIP 权限 (恢复限制测试)' : '一键为自己开通 VIP (免付费)'}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  onResetScanCount?.();
+                  setTestNotice('已重置为 0/3 次！可以重新测试免费扫码体验');
+                  setTimeout(() => setTestNotice(null), 2500);
+                }}
+                className="py-2 px-3 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-xs font-bold text-zinc-200 transition text-center"
+              >
+                重置免费额度 (0/3)
               </button>
             </div>
 
             {testNotice && (
-              <p className="text-[11px] text-[#00ff88] font-medium animate-in fade-in">
+              <p className="text-[11px] text-[#00ff88] font-medium animate-in fade-in flex items-center gap-1">
                 ✓ {testNotice}
               </p>
             )}
+            <p className="text-[10px] text-zinc-500">
+              提示：您自己日常使用时，只需点击上方“一键为自己开通 VIP”或在兑换码处输入 VIP59 / ADMIN，即可永久解锁。
+            </p>
           </div>
         </div>
 

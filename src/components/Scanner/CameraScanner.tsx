@@ -23,7 +23,7 @@ import {
 import { QRItem, ScannerSettings } from '../../types';
 import { parseQRContent } from '../../utils/qrParser';
 import { playScanBeep, triggerHaptic } from '../../utils/audio';
-import { getStripeCheckoutUrl } from '../../utils/stripe';
+import { getStripeCheckoutUrl, hasValidStripeLink, redirectToStripe } from '../../utils/stripe';
 import { decodeCodeFromCanvas, performImageOCR } from '../../utils/universalScanner';
 
 interface CameraScannerProps {
@@ -386,21 +386,30 @@ export const CameraScanner: React.FC<CameraScannerProps> = ({
 
                 {/* Primary Button */}
                 <div className="w-full space-y-2 pt-1">
-                  <a
-                    href={getStripeCheckoutUrl()}
-                    className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#00ff88] hover:bg-[#33ff9f] py-3.5 px-4 text-sm font-black text-black shadow-[0_0_25px_rgba(0,255,136,0.35)] hover:scale-[1.02] active:scale-[0.98] transition no-underline cursor-pointer"
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (hasValidStripeLink()) {
+                        redirectToStripe('annual', 59);
+                      } else if (onTriggerPaywall) {
+                        onTriggerPaywall();
+                      } else {
+                        onOpenPricing();
+                      }
+                    }}
+                    className="w-full flex items-center justify-center gap-2 rounded-2xl bg-[#00ff88] hover:bg-[#33ff9f] py-3.5 px-4 text-sm font-black text-black shadow-[0_0_25px_rgba(0,255,136,0.35)] hover:scale-[1.02] active:scale-[0.98] transition cursor-pointer"
                   >
                     <span className="text-base">🔓</span>
-                    <span>立即订阅 Starter (RM59/月 · 100次)</span>
+                    <span>立即开通年度 VIP (US$59 / 年)</span>
                     <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                  </a>
+                  </button>
 
                   <button
                     type="button"
                     onClick={() => onTriggerPaywall?.()}
                     className="w-full text-center text-xs text-zinc-400 hover:text-[#00ff88] py-1 transition underline"
                   >
-                    查看 3 大月度订阅 (RM59 / RM159 / RM299 每月自动扣) ➔
+                    查看 VIP 会员特权与方案 ➔
                   </button>
                 </div>
               </div>

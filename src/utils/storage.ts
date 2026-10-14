@@ -115,7 +115,12 @@ export function saveStoredSettings(settings: ScannerSettings): void {
 
 export function getStoredStripeLink(): string {
   try {
-    return localStorage.getItem(STORAGE_KEYS.STRIPE_LINK) || '';
+    const val = localStorage.getItem(STORAGE_KEYS.STRIPE_LINK);
+    if (val && (val.includes('aFa5kEaRLaG6eIK8UobbG00') || val.includes('00wcN69NHdSifMOb2wbbG06'))) {
+      localStorage.removeItem(STORAGE_KEYS.STRIPE_LINK);
+      return '';
+    }
+    return val || '';
   } catch {
     return '';
   }
@@ -123,7 +128,12 @@ export function getStoredStripeLink(): string {
 
 export function saveStoredStripeLink(link: string): void {
   try {
-    localStorage.setItem(STORAGE_KEYS.STRIPE_LINK, link.trim());
+    const trimmed = link.trim();
+    if (trimmed.includes('aFa5kEaRLaG6eIK8UobbG00') || trimmed.includes('00wcN69NHdSifMOb2wbbG06')) {
+      localStorage.removeItem(STORAGE_KEYS.STRIPE_LINK);
+      return;
+    }
+    localStorage.setItem(STORAGE_KEYS.STRIPE_LINK, trimmed);
   } catch (e) {
     console.error('Failed to save Stripe link:', e);
   }

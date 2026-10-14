@@ -57,7 +57,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <Camera className="w-3.5 h-3.5" />
-            Live Scan
+            极速扫码 (Scan)
           </button>
           <button
             onClick={() => setActiveTab('album')}
@@ -66,7 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <ImageIcon className="w-3.5 h-3.5" />
-            Scan from Album
+            相册识别 (Album)
           </button>
           <button
             onClick={() => setActiveTab('generate')}
@@ -75,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <QrCode className="w-3.5 h-3.5" />
-            Generate QR
+            制作二维码 (Generate)
           </button>
           <button
             onClick={() => setActiveTab('history')}
@@ -84,7 +84,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <History className="w-3.5 h-3.5" />
-            History & Export
+            历史与导出 (History)
+          </button>
+          <button
+            onClick={() => setActiveTab('vip')}
+            className={`transition-colors flex items-center gap-1.5 py-1 ${
+              activeTab === 'vip' ? 'text-emerald-400 font-semibold border-b-2 border-emerald-400' : 'hover:text-slate-200'
+            }`}
+          >
+            <Crown className="w-3.5 h-3.5" />
+            会员配套 (VIP)
           </button>
         </nav>
 
@@ -115,23 +124,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="sm:hidden">Active</span>
             </button>
           ) : (
-            <a
-              href={getStripeCheckoutUrl()}
-              onClick={() => {
-                if (typeof window !== 'undefined' && (window as unknown as { fbq?: (...args: unknown[]) => void }).fbq) {
-                  (window as unknown as { fbq: (...args: unknown[]) => void }).fbq('track', 'InitiateCheckout', {
-                    value: 29.00,
-                    currency: 'MYR',
-                    content_name: 'Navbar Unlock Starter',
-                  });
-                }
-              }}
-              className="flex items-center gap-1.5 rounded-lg bg-[#00ff88] hover:bg-[#33ff9f] px-3 py-1.5 text-xs font-black text-black shadow-sm shadow-[#00ff88]/30 transition hover:brightness-105 active:scale-95 no-underline"
+            <button
+              type="button"
+              onClick={onOpenPricing}
+              className="flex items-center gap-1.5 rounded-lg bg-[#00ff88] hover:bg-[#33ff9f] px-3 py-1.5 text-xs font-black text-black shadow-sm shadow-[#00ff88]/30 transition hover:brightness-105 active:scale-95 cursor-pointer"
             >
               <Sparkles className="h-3.5 w-3.5 text-black fill-current" />
-              <span>Unlock</span>
-              <span className="hidden sm:inline font-bold text-black/90">(RM59/mo)</span>
-            </a>
+              <span>会员配套</span>
+              <span className="hidden sm:inline font-bold text-black/90">(US$59/年)</span>
+            </button>
           )}
 
           {/* Privacy Audit / Anti-Framing Report button */}
