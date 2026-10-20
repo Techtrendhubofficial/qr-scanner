@@ -3,18 +3,12 @@
     "relation": ["delegate_permission/common.handle_all_urls"],
     "target": {
       "namespace": "android_app",
-      "package_name": "com.pavilionventure.qr",
+      "package_name": "com.pavilionventure.qrpro",
       "sha256_cert_fingerprints": [
-        "14:6D:E9:7D:0C:52:AB:71:3E:6F:77:45:90:3A:DF:22:98:33:F3:8E:7F:4F:92:4A:2A:77:86:14:4E:57:33:3A"
-      ]
-    }
-  },
-  {
-    "relation": ["delegate_permission/common.handle_all_urls"],
-    "target": {
-      "namespace": "android_app",
-      "package_name": "com.pavilionventure.pavilionqrpro",
-      "sha256_cert_fingerprints": [
+        "FE:BC:A2:83:A0:90:C4:8A:74:48:3B:AB:A0:E5:DB:8B:8D:18:24:D3:52:16:D4:56:4C:E3:66:35:E1:92:43:24",
+        "B6:DF:BE:63:68:9E:18:25:D8:48:29:1D:C3:1C:4A:45:6A:B9:8A:B9:36:1E:E2:B0:1B:77:8E:53:77:84:89:33",
+        "40:7F:40:B4:96:93:C1:D6:D2:7D:EE:68:2A:29:33:F5:B6:21:12:07:EB:1B:63:43:14:05:D6:DD:00:DF:55:59",
+        "5C:44:2F:F4:36:7D:13:79:6E:1A:0A:E3:20:CA:4F:1B:C5:37:CA:3E:05:FD:A7:FE:99:43:2B:40:1A:91:14:1B",
         "14:6D:E9:7D:0C:52:AB:71:3E:6F:77:45:90:3A:DF:22:98:33:F3:8E:7F:4F:92:4A:2A:77:86:14:4E:57:33:3A"
       ]
     }

@@ -1,8 +1,25 @@
+# Dependencies
 node_modules/
+
+# Production build outputs
 build/
 dist/
 coverage/
+
+# Large binaries and bundles (exceed GitHub push limits)
+*.zip
+*.aab
+*.apk
+
+# Android keystores and private credentials (blocked by GitHub Push Protection)
+*.keystore
+*.pem
+*-info.txt
+*.jks
+
+# Environment and logs
 .DS_Store
 *.log
 .env*
 !.env.example
+.aistudio/

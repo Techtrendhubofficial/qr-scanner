@@ -17,6 +17,7 @@ import {
   Key,
   ExternalLink,
   CreditCard,
+  Download,
 } from 'lucide-react';
 import { ActiveTab, QRItem, ScannerSettings, SubscriptionState } from './types';
 import {
@@ -90,6 +91,28 @@ export default function App() {
 
   // Generator pre-filled text
   const [generatorText, setGeneratorText] = useState<string | undefined>(undefined);
+  const [isDownloadingAab, setIsDownloadingAab] = useState(false);
+
+  const handleDownloadAab = async () => {
+    try {
+      setIsDownloadingAab(true);
+      const res = await fetch('/Pavilion%20QR.aab');
+      if (!res.ok) throw new Error('Fetch failed');
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Pavilion QR.aab';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => window.URL.revokeObjectURL(url), 15000);
+    } catch {
+      window.location.href = '/Pavilion%20QR.aab';
+    } finally {
+      setTimeout(() => setIsDownloadingAab(false), 2000);
+    }
+  };
 
   // Load initial persistent storage & check for Stripe payment return
   useEffect(() => {
@@ -300,6 +323,47 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 mx-auto w-full max-w-5xl px-4 sm:px-6 pt-4 space-y-4">
+        {/* Google Play Signed AAB Direct Download Banner */}
+        <div className="rounded-2xl border border-emerald-500/40 bg-gradient-to-r from-emerald-950/80 via-slate-900 to-emerald-950/80 p-3.5 sm:p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-lg shadow-emerald-950/30">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+              <Download className="w-5 h-5 stroke-[2.5]" />
+            </div>
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-xs sm:text-sm font-bold text-white">
+                  Google Play 正式 AAB 安装包已编译就绪
+                </span>
+                <span className="text-[10px] font-mono font-bold text-emerald-300 bg-emerald-900/60 border border-emerald-700/60 px-1.5 py-0.5 rounded">
+                  com.pavilionventure.qrpro
+                </span>
+              </div>
+              <p className="text-[11px] sm:text-xs text-slate-300 mt-0.5">
+                已匹配控制台包名与正式签名，点击右侧绿色按钮直接下载保存至手机或电脑
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+            <button
+              type="button"
+              onClick={handleDownloadAab}
+              disabled={isDownloadingAab}
+              className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-slate-950 font-black py-2.5 px-4 text-xs transition active:scale-95 cursor-pointer shadow-md disabled:opacity-60"
+            >
+              <Download className="w-4 h-4 stroke-[2.5]" />
+              <span>{isDownloadingAab ? '正在保存文件...' : '点此直接下载 AAB'}</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsPlayGuideOpen(true)}
+              className="flex items-center justify-center gap-1 rounded-xl border border-slate-700 bg-slate-800/90 hover:bg-slate-700 text-slate-200 py-2.5 px-3 text-xs font-bold transition cursor-pointer"
+              title="查看密钥证书与上架指南"
+            >
+              <span>查看证书</span>
+            </button>
+          </div>
+        </div>
+
         {/* Promotional / Unlock Pro Banner */}
         {!isUserUnlocked && (
           <div className="relative rounded-2xl border border-[#00ff88]/30 bg-black p-3.5 sm:p-4 shadow-[0_0_30px_rgba(0,255,136,0.1)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">

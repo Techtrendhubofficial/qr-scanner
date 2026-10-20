@@ -1,5 +1,5 @@
 {
-  "packageId": "com.pavilionventure.qr",
+  "packageId": "com.pavilionventure.qrpro",
   "host": "qr.pavilionventure.com",
   "name": "Pavilion QR Pro",
   "launcherName": "Pavilion QR Pro",
@@ -10,8 +10,8 @@
   "startUrl": "/",
   "iconUrl": "https://qr.pavilionventure.com/pwa-512x512.png",
   "maskableIconUrl": "https://qr.pavilionventure.com/maskable-512x512.png",
-  "appVersionName": "1.0.3",
-  "appVersionCode": 4,
+  "appVersionName": "1.0.4",
+  "appVersionCode": 5,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://qr.pavilionventure.com/manifest.webmanifest",

@@ -44,13 +44,34 @@ export const GooglePlayLaunchModal: React.FC<GooglePlayLaunchModalProps> = ({
     setTimeout(() => setCopiedKey(null), 2000);
   };
 
+  const downloadBlobFile = async (url: string, filename: string) => {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => window.URL.revokeObjectURL(blobUrl), 15000);
+    } catch {
+      window.location.href = url;
+    }
+  };
+
   const downloadAabFile = () => {
-    const a = document.createElement('a');
-    a.href = '/pavilion-qr-pro-release-v4.aab';
-    a.download = 'pavilion-qr-pro-release-v4.aab';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    downloadBlobFile('/Pavilion%20QR.aab', 'Pavilion QR.aab');
+  };
+
+  const downloadZipFile = () => {
+    downloadBlobFile('/qrpro-bundle-package.zip', 'qrpro-bundle-package.zip');
+  };
+
+  const downloadPemCert = () => {
+    downloadBlobFile('/upload_certificate_qrpro.pem', 'upload_certificate_qrpro.pem');
   };
 
   const downloadTwaManifest = () => {
@@ -170,15 +191,16 @@ export const GooglePlayLaunchModal: React.FC<GooglePlayLaunchModalProps> = ({
                     className="flex-1 flex items-center justify-center gap-2 rounded-xl bg-[#00ff88] hover:bg-[#33ff9f] text-black py-2.5 px-3 font-black text-xs shadow-sm transition active:scale-95 cursor-pointer"
                   >
                     <Download className="w-3.5 h-3.5 stroke-[2.5]" />
-                    <span>⬇️ 立即下载 pavilion-qr-pro-release-v4.aab</span>
+                    <span>⬇️ 立即下载 Pavilion QR.aab (包名已匹配)</span>
                   </button>
                   <button
                     type="button"
-                    onClick={downloadTwaManifest}
+                    onClick={downloadPemCert}
                     className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-200 py-2.5 px-3 font-bold text-xs transition cursor-pointer"
+                    title="Google Play 重置上传密钥所需公钥证书"
                   >
-                    <FileCode className="w-3.5 h-3.5 text-emerald-400" />
-                    <span>twa-manifest.json</span>
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <span>证书 upload_certificate.pem</span>
                   </button>
                 </div>
               </div>

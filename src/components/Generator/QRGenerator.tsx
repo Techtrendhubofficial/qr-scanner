@@ -65,11 +65,11 @@ export const QRGenerator: React.FC<QRGeneratorProps> = ({
 
   const [contactName, setContactName] = useState('Jason Ang');
   const [contactPhone, setContactPhone] = useState('+1 800 555 0199');
-  const [contactEmail, setContactEmail] = useState('jasonang9996@gmail.com');
+  const [contactEmail, setContactEmail] = useState('support@pavilionventure.com');
   const [contactCompany, setContactCompany] = useState('Pavilion Venture');
   const [contactTitle, setContactTitle] = useState('Software Architect');
 
-  const [emailTo, setEmailTo] = useState('jasonang9996@gmail.com');
+  const [emailTo, setEmailTo] = useState('support@pavilionventure.com');
   const [emailSubject, setEmailSubject] = useState('Inquiry');
   const [emailBody, setEmailBody] = useState('Hello Team,');
 

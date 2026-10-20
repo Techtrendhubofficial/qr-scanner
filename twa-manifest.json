@@ -1,0 +1,30 @@
+{
+  "packageId": "com.pavilionventure.qrpro",
+  "host": "qr.pavilionventure.com",
+  "name": "Pavilion QR Pro",
+  "launcherName": "Pavilion QR Pro",
+  "themeColor": "#0f172a",
+  "navigationColor": "#020617",
+  "backgroundColor": "#020617",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "https://qr.pavilionventure.com/pwa-512x512.png",
+  "maskableIconUrl": "https://qr.pavilionventure.com/maskable-512x512.png",
+  "appVersionName": "1.0.4",
+  "appVersionCode": 5,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://qr.pavilionventure.com/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  }
+}

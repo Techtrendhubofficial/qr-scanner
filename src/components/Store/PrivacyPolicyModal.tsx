@@ -82,8 +82,8 @@ export const PrivacyPolicyModal: React.FC<PrivacyPolicyModalProps> = ({
             <p className="text-slate-400 text-[11px] flex items-center gap-1.5">
               <Mail className="w-3.5 h-3.5 text-slate-400" />
               <span>Direct inquiries: </span>
-              <a href="mailto:jasonang9996@gmail.com" className="text-emerald-400 underline">
-                jasonang9996@gmail.com
+              <a href="mailto:support@pavilionventure.com" className="text-emerald-400 underline">
+                support@pavilionventure.com
               </a>
             </p>
           </div>

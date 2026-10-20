@@ -89,14 +89,8 @@ export function redirectToStripe(_planId = 'annual', priceNum = 59): boolean {
       });
     }
 
-    try {
-      const opened = window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
-      if (!opened) {
-        window.location.href = checkoutUrl;
-      }
-    } catch {
-      window.location.href = checkoutUrl;
-    }
+    // Direct navigation is required for Android Custom Tabs / PWAs to avoid blank window popup
+    window.location.href = checkoutUrl;
     return true;
   }
   return false;

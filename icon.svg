@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+    <linearGradient id="primaryGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <linearGradient id="scanBeam" x1="0" y1="0" x2="512" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#10b981" stop-opacity="0" />
+      <stop offset="50%" stop-color="#34d399" stop-opacity="1" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+  <rect x="12" y="12" width="488" height="488" rx="100" stroke="#334155" stroke-width="4" stroke-opacity="0.3" fill="none" />
+
+  <!-- Viewfinder Corner Brackets -->
+  <path d="M120 180 V130 A10 10 0 0 1 130 120 H180" stroke="url(#primaryGrad)" stroke-width="20" stroke-linecap="round" fill="none" />
+  <path d="M392 180 V130 A10 10 0 0 0 382 120 H332" stroke="url(#primaryGrad)" stroke-width="20" stroke-linecap="round" fill="none" />
+  <path d="M120 332 V382 A10 10 0 0 0 130 392 H180" stroke="url(#primaryGrad)" stroke-width="20" stroke-linecap="round" fill="none" />
+  <path d="M392 332 V382 A10 10 0 0 1 382 392 H332" stroke="url(#primaryGrad)" stroke-width="20" stroke-linecap="round" fill="none" />
+
+  <!-- QR Pattern Blocks -->
+  <!-- Top-left eye -->
+  <rect x="160" y="160" width="64" height="64" rx="12" fill="#10b981" />
+  <rect x="176" y="176" width="32" height="32" rx="6" fill="#0f172a" />
+  <rect x="184" y="184" width="16" height="16" rx="3" fill="#34d399" />
+
+  <!-- Top-right eye -->
+  <rect x="288" y="160" width="64" height="64" rx="12" fill="#06b6d4" />
+  <rect x="304" y="176" width="32" height="32" rx="6" fill="#0f172a" />
+  <rect x="312" y="184" width="16" height="16" rx="3" fill="#22d3ee" />
+
+  <!-- Bottom-left eye -->
+  <rect x="160" y="288" width="64" height="64" rx="12" fill="#06b6d4" />
+  <rect x="176" y="304" width="32" height="32" rx="6" fill="#0f172a" />
+  <rect x="184" y="312" width="16" height="16" rx="3" fill="#22d3ee" />
+
+  <!-- Data Matrix Dots -->
+  <rect x="240" y="160" width="24" height="24" rx="6" fill="#e2e8f0" fill-opacity="0.8" />
+  <rect x="240" y="200" width="24" height="24" rx="6" fill="#e2e8f0" fill-opacity="0.6" />
+  <rect x="288" y="240" width="24" height="24" rx="6" fill="#e2e8f0" fill-opacity="0.8" />
+  <rect x="240" y="288" width="24" height="24" rx="6" fill="#10b981" />
+  <rect x="288" y="288" width="64" height="64" rx="12" fill="url(#primaryGrad)" />
+  <circle cx="320" cy="320" r="14" fill="#0f172a" />
+
+  <!-- Horizontal Scan Laser Beam -->
+  <rect x="100" y="252" width="312" height="8" rx="4" fill="url(#scanBeam)" />
+  <circle cx="256" cy="256" r="6" fill="#ffffff" />
+</svg>

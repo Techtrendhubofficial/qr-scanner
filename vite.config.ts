@@ -1,12 +1,59 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import {defineConfig} from 'vite';
-import {VitePWA} from 'vite-plugin-pwa';
+import fs from 'fs';
+import { defineConfig } from 'vite';
+import { VitePWA } from 'vite-plugin-pwa';
+
+function forceDownloadPlugin() {
+  const handleDownload = (req: any, res: any, next: any) => {
+    try {
+      const rawUrl = req.url?.split('?')[0] || '';
+      const decodedUrl = decodeURIComponent(rawUrl);
+      const filename = path.basename(decodedUrl);
+      
+      const isTargetFile = 
+        decodedUrl.endsWith('.aab') || 
+        decodedUrl.endsWith('.apk') || 
+        decodedUrl.endsWith('.keystore') || 
+        decodedUrl.endsWith('.pem') || 
+        decodedUrl.endsWith('.zip') ||
+        decodedUrl.startsWith('/download/');
+
+      if (isTargetFile) {
+        const actualName = decodedUrl.startsWith('/download/') ? decodedUrl.replace('/download/', '') : filename;
+        const filePath = path.resolve('public', actualName);
+        if (fs.existsSync(filePath)) {
+          const stat = fs.statSync(filePath);
+          res.setHeader('Content-Type', 'application/octet-stream');
+          res.setHeader('Content-Disposition', `attachment; filename="${actualName}"`);
+          res.setHeader('Content-Length', stat.size);
+          res.setHeader('Cache-Control', 'no-cache');
+          const stream = fs.createReadStream(filePath);
+          return stream.pipe(res);
+        }
+      }
+    } catch (e) {
+      console.error('Error handling download stream:', e);
+    }
+    next();
+  };
+
+  return {
+    name: 'force-download-plugin',
+    configureServer(server: any) {
+      server.middlewares.use(handleDownload);
+    },
+    configurePreviewServer(server: any) {
+      server.middlewares.use(handleDownload);
+    }
+  };
+}
 
 export default defineConfig(() => {
   return {
     plugins: [
+      forceDownloadPlugin(),
       react(),
       tailwindcss(),
       VitePWA({
@@ -72,4 +119,3 @@ export default defineConfig(() => {
     },
   };
 });
-
