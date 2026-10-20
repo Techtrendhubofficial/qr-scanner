@@ -1,85 +1,97 @@
 import React from 'react';
-import { Camera, Image as ImageIcon, QrCode, History, Crown } from 'lucide-react';
-import { ActiveTab, SubscriptionState } from '../types';
+import { TabType } from '../types';
+import { Scan, Image as ImageIcon, PlusCircle, History, Crown } from 'lucide-react';
 
 interface BottomNavProps {
-  activeTab: ActiveTab;
-  setActiveTab: (tab: ActiveTab) => void;
-  subscription: SubscriptionState;
+  activeTab: TabType;
+  setActiveTab: (tab: TabType) => void;
+  openVipModal: () => void;
+  isVip: boolean;
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({
   activeTab,
   setActiveTab,
-  subscription,
+  openVipModal,
+  isVip,
 }) => {
-  const tabs = [
-    {
-      id: 'scan' as ActiveTab,
-      label: '实时扫码',
-      icon: Camera,
-    },
-    {
-      id: 'album' as ActiveTab,
-      label: '相册识别',
-      icon: ImageIcon,
-    },
-    {
-      id: 'generate' as ActiveTab,
-      label: '生成QR',
-      icon: QrCode,
-    },
-    {
-      id: 'history' as ActiveTab,
-      label: '历史导出',
-      icon: History,
-    },
-    {
-      id: 'vip' as ActiveTab,
-      label: subscription.isPro ? 'VIP尊享' : '会员配套',
-      icon: Crown,
-      highlight: !subscription.isPro,
-    },
-  ];
-
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 md:hidden border-t border-zinc-800 bg-black/95 backdrop-blur-lg">
-      <div className="grid grid-cols-5 items-center h-16 max-w-lg mx-auto px-1">
-        {tabs.map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
+    <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#090d16]/95 backdrop-blur-lg border-t border-slate-800/80 px-2 py-1.5 safe-area-pb">
+      <div className="grid grid-cols-5 items-center justify-around">
+        {/* 扫码 */}
+        <button
+          onClick={() => setActiveTab('scan')}
+          className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all ${
+            activeTab === 'scan'
+              ? 'text-emerald-400 font-semibold'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'scan' ? 'bg-emerald-500/15' : ''}`}>
+            <Scan className="w-5 h-5" />
+          </div>
+          <span className="text-[11px] mt-0.5">扫码</span>
+        </button>
 
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`flex flex-col items-center justify-center min-h-[48px] py-1 transition-all ${
-                isActive
-                  ? 'text-[#00ff88] font-bold'
-                  : tab.highlight
-                  ? 'text-[#00ff88] hover:text-[#33ff9f]'
-                  : 'text-zinc-400 hover:text-zinc-200'
-              }`}
-            >
-              <div className="relative">
-                <Icon
-                  className={`w-5 h-5 transition-transform ${
-                    isActive ? 'scale-110 stroke-[2.2]' : 'scale-100'
-                  }`}
-                />
-                {tab.id === 'vip' && !subscription.isPro && (
-                  <span className="absolute -top-1 -right-2 flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00ff88] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00ff88]"></span>
-                  </span>
-                )}
-              </div>
-              <span className="text-[11px] font-medium tracking-tight mt-1 truncate max-w-[64px]">
-                {tab.label}
-              </span>
-            </button>
-          );
-        })}
+        {/* 相册识别 */}
+        <button
+          onClick={() => setActiveTab('album')}
+          className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all ${
+            activeTab === 'album'
+              ? 'text-emerald-400 font-semibold'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'album' ? 'bg-emerald-500/15' : ''}`}>
+            <ImageIcon className="w-5 h-5" />
+          </div>
+          <span className="text-[11px] mt-0.5">相册</span>
+        </button>
+
+        {/* 制作二维码 (Center Accent) */}
+        <button
+          onClick={() => setActiveTab('generate')}
+          className="flex flex-col items-center justify-center -mt-3.5"
+        >
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-400 p-0.5 shadow-lg shadow-emerald-500/30 flex items-center justify-center transform active:scale-95 transition-transform">
+            <div className="w-full h-full bg-[#090d16] rounded-[14px] flex items-center justify-center">
+              <PlusCircle className="w-6 h-6 text-emerald-400" />
+            </div>
+          </div>
+          <span className={`text-[11px] mt-1 ${activeTab === 'generate' ? 'text-emerald-400 font-semibold' : 'text-slate-400'}`}>
+            制作
+          </span>
+        </button>
+
+        {/* 历史记录 */}
+        <button
+          onClick={() => setActiveTab('history')}
+          className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all ${
+            activeTab === 'history'
+              ? 'text-emerald-400 font-semibold'
+              : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${activeTab === 'history' ? 'bg-emerald-500/15' : ''}`}>
+            <History className="w-5 h-5" />
+          </div>
+          <span className="text-[11px] mt-0.5">历史</span>
+        </button>
+
+        {/* 会员 */}
+        <button
+          onClick={openVipModal}
+          className={`flex flex-col items-center justify-center py-1 rounded-xl transition-all ${
+            isVip
+              ? 'text-amber-400 font-semibold'
+              : 'text-slate-400 hover:text-amber-300'
+          }`}
+        >
+          <div className={`p-1 rounded-lg ${isVip ? 'bg-amber-500/15' : ''}`}>
+            <Crown className="w-5 h-5 text-amber-400" />
+          </div>
+          <span className="text-[11px] mt-0.5">VIP</span>
+        </button>
       </div>
     </nav>
   );
