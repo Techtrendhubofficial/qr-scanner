@@ -1,6 +1,7 @@
 {
   "name": "Pavilion QR Pro - QR Scanner & Generator",
   "short_name": "QR Pro",
+  "description": "Fast, secure QR scanner and generator for Pavilion businesses. Scan, create, and manage QR codes offline.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#090d16",
