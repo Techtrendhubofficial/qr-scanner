@@ -1,11 +1,14 @@
 [
   {
-    "relation": ["delegate_permission/common.handle_all_urls"],
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
     "target": {
       "namespace": "android_app",
       "package_name": "com.pavilionventure.qrpro",
       "sha256_cert_fingerprints": [
-        "C1:02:C1:24:43:BF:E1:05:DE:7A:9B:75:6C:26:1F:A8:5B:11:2D:F4:E0:0F:A7:93:D0:F5:29:A3:3E:1D:4B:68"
+        "E8:14:55:7B:49:CC:FE:91:0D:2A:FF:D8:00:EE:7F:34:F8:22:B7:85:8A:44:90:48:54:27:87:AF:37:25:DF:E5",
+        "22:5C:54:65:8F:7C:95:F7:A9:8F:8F:8B:E5:63:EA:89:97:9A:EC:3B:12:8F:74:2C:0D:F7:31:99:42:54:EF:FE"
       ]
     }
   }
