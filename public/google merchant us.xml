@@ -1,16 +1,15 @@
-
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
     <title>Pavilion Venture Official Store (US / USD)</title>
     <link>https://shop.pavilionventure.com</link>
-    <description>Fashion Apparel, Tech Gadgets, Dual Display Watches &amp; Lifestyle Accessories - Tracked US Delivery</description>
+    <description>Fashion Apparel, Tech Gadgets, Dual Display Watches and Lifestyle Accessories</description>
 
-    <!-- Item 1: Hotel Camera Detection Wireless Signal Detector -->
+    <!-- 1: Hotel Camera Detector -->
     <item>
       <g:id>PV-US-DETECTOR-CAMERA-01</g:id>
       <g:title><![CDATA[Hotel Camera Detection Privacy Positioning Monitoring Wireless Signal Detector]]></g:title>
-      <g:description><![CDATA[High precision wireless RF signal detector for hotel camera detection, anti-spy monitoring, privacy and GPS tracking locator protection. Portable handheld design with long battery life.]]></g:description>
+      <g:description><![CDATA[High precision wireless RF signal detector for hotel camera detection, anti-spy monitoring, privacy and GPS tracking locator protection. Portable handheld design.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYK4kAB2-Y</g:link>
       <g:image_link>https://oss-cf.cjdropshipping.com/product/2024/12/04/08/df70d3f5-5e5e-434f-ba9d-8229f04d2925_trans.jpeg</g:image_link>
       <g:condition>new</g:condition>
@@ -22,7 +21,7 @@
       <g:shipping_weight>0.35 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 2: Women's Yoga Vest Halter Tank-top -->
+    <!-- 2: Women's Yoga Vest Halter -->
     <item>
       <g:id>PV-US-YOGA-VEST-HALTER-02</g:id>
       <g:title><![CDATA[Women's Yoga Vest Halter Beautiful Back Tank-top]]></g:title>
@@ -38,7 +37,7 @@
       <g:shipping_weight>0.25 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 3: Yoga Tank Top With Removable Chest Pads -->
+    <!-- 3: Yoga Tank Top With Removable Chest Pads -->
     <item>
       <g:id>PV-US-YOGA-BRA-PADS-03</g:id>
       <g:title><![CDATA[Yoga Tank Top With Removable Chest Pads Shockproof Sports Bra]]></g:title>
@@ -54,7 +53,7 @@
       <g:shipping_weight>0.25 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 4: European American Style Burgundy Sexy Suspender Skirt -->
+    <!-- 4: Burgundy Suspender Slip Dress -->
     <item>
       <g:id>PV-US-DRESS-BURGUNDY-SLIP-04</g:id>
       <g:title><![CDATA[European &amp; American Style Burgundy Sexy Suspender Slip Skirt Dress]]></g:title>
@@ -70,27 +69,27 @@
       <g:shipping_weight>0.40 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 5: POEDAGAR Multifunction Dual Display Luminous Watch -->
+    <!-- 5: POEDAGAR Dual Display Watch -->
     <item>
       <g:id>PV-US-WATCH-POEDAGAR-05</g:id>
-      <g:title><![CDATA[POEDAGAR Multifunction Dual Display Luminous Quartz Men's Watch]]></g:title>
-      <g:description><![CDATA[POEDAGAR luxury multifunction analog and digital dual display watch with luminous hands, waterproof stainless steel strap, stopwatch and alarm calendar.]]></g:description>
+      <g:title><![CDATA[POEDAGAR Dual Display Luminous Quartz Waterproof Sports Men's Watch]]></g:title>
+      <g:description><![CDATA[High quality luxury stainless steel waterproof dual display electronic and analog quartz sports wristwatch with luminous hands, calendar and alarm.]]></g:description>
       <g:link>https://shop.pavilionventure.com/product/poedagar-dual-display-watch</g:link>
       <g:image_link>https://timeelegance.com.bd/cdn/shop/files/web_1_9e67c706-d41a-48de-9432-3685c4792625.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
       <g:price>29.90 USD</g:price>
-      <g:brand>POEDAGAR</g:brand>
+      <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Apparel &amp; Accessories &gt; Jewelry &gt; Watches</g:google_product_category>
       <g:shipping_weight>0.35 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 6: Plus Velvet Thick Korean Loose Top -->
+    <!-- 6: Plus Velvet Thick Korean Loose Top -->
     <item>
       <g:id>PV-US-TOP-KOREAN-FLEECE-06</g:id>
-      <g:title><![CDATA[Plus Velvet Thick Fashion All-Match Korean Loose Top Sweatshirt]]></g:title>
-      <g:description><![CDATA[Warm winter fleece-lined velvet thick all-match Korean style loose crewneck pullover sweatshirt for casual comfortable daily wear.]]></g:description>
+      <g:title><![CDATA[Autumn Winter Plus Velvet Thick Korean Loose Casual Top Sweatshirt]]></g:title>
+      <g:description><![CDATA[Women's autumn and winter plus velvet thickened loose hooded warm sweatshirt pullover top for casual wear.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYb+DqXAwv</g:link>
       <g:image_link>https://cf.cjdropshipping.com/68d4f222-7418-428a-b279-662163c19499.jpg</g:image_link>
       <g:condition>new</g:condition>
@@ -102,11 +101,11 @@
       <g:shipping_weight>0.45 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 7: Athletic Workout Tank Top with Removable Padding -->
+    <!-- 7: Athletic Fitness Workout Tank Top -->
     <item>
       <g:id>PV-US-YOGA-ATHLETIC-TANK-07</g:id>
-      <g:title><![CDATA[Athletic Fitness Workout Tank Top with Removable Chest Padding]]></g:title>
-      <g:description><![CDATA[Shockproof sports bra yoga top with breathable ergonomic cut and removable chest pads. Suitable for Pilates, gym, running and outdoor training.]]></g:description>
+      <g:title><![CDATA[Women's Athletic Fitness Workout Running Quick Dry Tank Top]]></g:title>
+      <g:description><![CDATA[High performance women's sports workout gym yoga running tank top, breathable high elastic quick drying fabric.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYbwBVxA8U</g:link>
       <g:image_link>https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/dbbec30e-fd78-4042-86af-dde2b2446f84.jpg</g:image_link>
       <g:condition>new</g:condition>
@@ -118,11 +117,11 @@
       <g:shipping_weight>0.25 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 8: Luxury European Burgundy Evening Suspender Dress -->
+    <!-- 8: Luxury Velvet Evening Slip Dress -->
     <item>
       <g:id>PV-US-DRESS-BURGUNDY-EVENING-08</g:id>
-      <g:title><![CDATA[Luxury European Style Velvet Party Slip Dress - Burgundy]]></g:title>
-      <g:description><![CDATA[Elegant chic body-hugging sexy evening dress with adjustable shoulder straps and side slit. Perfect for dinners, cocktails, and night outings.]]></g:description>
+      <g:title><![CDATA[Luxury European Velvet Evening Party Bodycon Suspender Dress]]></g:title>
+      <g:description><![CDATA[Elegant European style velvet evening party suspender dress in deep burgundy, slim fit silhouette.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYbwA7U4zQ</g:link>
       <g:image_link>https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/db5130b2-6eae-435e-a19c-f8bb93620605.jpg</g:image_link>
       <g:condition>new</g:condition>
@@ -134,11 +133,11 @@
       <g:shipping_weight>0.40 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 9: Women's French-style Asymmetrical One-shoulder Dress -->
+    <!-- 9: French-Style Asymmetrical One-Shoulder Dress -->
     <item>
       <g:id>PV-US-DRESS-FRENCH-ASYM-09</g:id>
-      <g:title><![CDATA[Women's French-Style Asymmetrical One-Shoulder Vacation Casual Dress]]></g:title>
-      <g:description><![CDATA[Chic French-inspired irregular one-shoulder solid color A-line dress with flattering drape. Ideal for vacations, parties and stylish streetwear.]]></g:description>
+      <g:title><![CDATA[French-Style Asymmetrical One-Shoulder Waist Evening Dress]]></g:title>
+      <g:description><![CDATA[Chic French retro design asymmetrical one-shoulder waist slim silhouette evening party dress.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYbw7C7QTM</g:link>
       <g:image_link>https://cf.cjdropshipping.com/quick/product/2be89b01-404d-4276-9058-f1ad1e9c54d5.jpg</g:image_link>
       <g:condition>new</g:condition>
@@ -150,11 +149,11 @@
       <g:shipping_weight>0.35 kg</g:shipping_weight>
     </item>
 
-    <!-- Item 10: Winter Fashion Warm Fleece Hoodies Sweatshirt -->
+    <!-- 10: Winter Warm Fleece Hoodie -->
     <item>
       <g:id>PV-US-HOODIE-WINTER-FLEECE-10</g:id>
-      <g:title><![CDATA[Winter Fashion Warm Fleece Hoodies Casual Loose Sweatshirt]]></g:title>
-      <g:description><![CDATA[Thickened fleece winter pullover hoodie sweatshirt with kangaroo pocket and adjustable drawstring hood. Soft thermal interior for chilly weather.]]></g:description>
+      <g:title><![CDATA[Winter Fashion Warm Fleece Hoodies Sweatshirt Thermal Pullover]]></g:title>
+      <g:description><![CDATA[Cozy thermal fleece hooded sweatshirt for winter comfort, stylish oversized cut and thick warmth retention.]]></g:description>
       <g:link>https://shop.pavilionventure.com/product/winter-fashion-hoodies-sweatshirt</g:link>
       <g:image_link>https://cf.cjdropshipping.com/68d4f222-7418-428a-b279-662163c19499.jpg</g:image_link>
       <g:condition>new</g:condition>
@@ -162,7 +161,7 @@
       <g:price>28.90 USD</g:price>
       <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Outerwear &gt; Sweatshirts &amp; Hoodies</g:google_product_category>
+      <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Shirts &amp; Tops</g:google_product_category>
       <g:shipping_weight>0.55 kg</g:shipping_weight>
     </item>
 
