@@ -5,17 +5,39 @@ import { Scanner } from './components/Scanner';
 import { AlbumScanner } from './components/AlbumScanner';
 import { Generator } from './components/Generator';
 import { History } from './components/History';
-import { AuditReportModal } from './components/AuditReportModal';
-import { PlayStoreModal } from './components/PlayStoreModal';
 import { VipModal } from './components/VipModal';
 import { TabType, ScanItem, GeneratedQrItem } from './types';
+import { Language } from './utils/i18n';
 
 export const App: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabType>('scan');
-  
-  // Modals
-  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
-  const [isPlayStoreModalOpen, setIsPlayStoreModalOpen] = useState(false);
+  // Language State (Defaults to English 'en' for Google Play and global users, with easy toggle to Chinese)
+  const [lang, setLang] = useState<Language>(() => {
+    const saved = localStorage.getItem('pavilion_app_lang');
+    if (saved === 'en' || saved === 'zh') return saved;
+    return 'en';
+  });
+
+  const toggleLang = () => {
+    setLang((prev) => {
+      const next: Language = prev === 'en' ? 'zh' : 'en';
+      localStorage.setItem('pavilion_app_lang', next);
+      return next;
+    });
+  };
+
+  // Default to QR Scanner view with optional query tab routing
+  const [activeTab, setActiveTab] = useState<TabType>(() => {
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      const tabParam = url.searchParams.get('tab');
+      if (tabParam === 'album' || tabParam === 'generate' || tabParam === 'history' || tabParam === 'scan') {
+        return tabParam;
+      }
+    }
+    return 'scan';
+  });
+
+  // VIP Status Modal
   const [isVipModalOpen, setIsVipModalOpen] = useState(false);
 
   // VIP Status
@@ -66,7 +88,11 @@ export const App: React.FC = () => {
   };
 
   const handleClearHistory = () => {
-    if (window.confirm('确定要清空全部本地历史记录吗？此操作无法撤销。')) {
+    const confirmMsg =
+      lang === 'en'
+        ? 'Are you sure you want to clear all local history? This cannot be undone.'
+        : '确定要清空全部本地历史记录吗？此操作无法撤销。';
+    if (window.confirm(confirmMsg)) {
       setScans([]);
       setGenerations([]);
       localStorage.removeItem('pavilion_scans_history');
@@ -80,10 +106,10 @@ export const App: React.FC = () => {
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        openAuditModal={() => setIsAuditModalOpen(true)}
-        openPlayStoreModal={() => setIsPlayStoreModalOpen(true)}
         openVipModal={() => setIsVipModalOpen(true)}
         isVip={isVip}
+        lang={lang}
+        toggleLang={toggleLang}
       />
 
       {/* Main Content Area */}
@@ -92,15 +118,16 @@ export const App: React.FC = () => {
           <Scanner
             onScanResult={handleScanResult}
             onOpenAlbum={() => setActiveTab('album')}
+            lang={lang}
           />
         )}
 
         {activeTab === 'album' && (
-          <AlbumScanner onScanResult={handleScanResult} />
+          <AlbumScanner onScanResult={handleScanResult} lang={lang} />
         )}
 
         {activeTab === 'generate' && (
-          <Generator onSaveQr={handleSaveQr} />
+          <Generator onSaveQr={handleSaveQr} lang={lang} />
         )}
 
         {activeTab === 'history' && (
@@ -108,6 +135,7 @@ export const App: React.FC = () => {
             scans={scans}
             generations={generations}
             onClearHistory={handleClearHistory}
+            lang={lang}
           />
         )}
       </main>
@@ -116,26 +144,16 @@ export const App: React.FC = () => {
       <BottomNav
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        openVipModal={() => setIsVipModalOpen(true)}
-        isVip={isVip}
+        lang={lang}
       />
 
-      {/* Modals */}
-      <AuditReportModal
-        isOpen={isAuditModalOpen}
-        onClose={() => setIsAuditModalOpen(false)}
-      />
-
-      <PlayStoreModal
-        isOpen={isPlayStoreModalOpen}
-        onClose={() => setIsPlayStoreModalOpen(false)}
-      />
-
+      {/* VIP Modal */}
       <VipModal
         isOpen={isVipModalOpen}
         onClose={() => setIsVipModalOpen(false)}
         isVip={isVip}
         setIsVip={handleSetVip}
+        lang={lang}
       />
     </div>
   );

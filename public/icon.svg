@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <rect width="512" height="512" rx="112" fill="#020617"/>
+  <rect x="32" y="32" width="448" height="448" rx="88" stroke="#10b981" stroke-width="8" stroke-opacity="0.3"/>
+  <path d="M112 112h112v112H112z" fill="#10b981"/>
+  <path d="M136 136h64v64h-64z" fill="#020617"/>
+  <path d="M152 152h32v32h-32z" fill="#10b981"/>
+  <path d="M288 112h112v112H288z" fill="#10b981"/>
+  <path d="M312 136h64v64h-64z" fill="#020617"/>
+  <path d="M328 152h32v32h-32z" fill="#10b981"/>
+  <path d="M112 288h112v112H112z" fill="#10b981"/>
+  <path d="M136 312h64v64h-64z" fill="#020617"/>
+  <path d="M152 328h32v32h-32z" fill="#10b981"/>
+  <rect x="288" y="288" width="48" height="48" rx="8" fill="#10b981"/>
+  <rect x="352" y="288" width="48" height="48" rx="8" fill="#10b981"/>
+  <rect x="288" y="352" width="48" height="48" rx="8" fill="#10b981"/>
+  <rect x="352" y="352" width="48" height="48" rx="8" fill="#10b981"/>
+  <rect x="240" y="112" width="32" height="112" rx="6" fill="#10b981" fill-opacity="0.8"/>
+  <rect x="112" y="240" width="112" height="32" rx="6" fill="#10b981" fill-opacity="0.8"/>
+  <rect x="240" y="240" width="32" height="32" rx="6" fill="#34d399"/>
+</svg>

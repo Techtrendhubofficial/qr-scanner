@@ -1,0 +1,30 @@
+{
+  "packageId": "com.scancraft.qr",
+  "host": "qr.pavilionventure.com",
+  "name": "ScanCraft Pro - QR Scanner & Generator",
+  "launcherName": "ScanCraft",
+  "themeColor": "#0f172a",
+  "navigationColor": "#020617",
+  "backgroundColor": "#020617",
+  "enableNotifications": false,
+  "startUrl": "/",
+  "iconUrl": "/pwa-512x512.png",
+  "maskableIconUrl": "/maskable-512x512.png",
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": false
+    },
+    "playBilling": {
+      "enabled": true
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  }
+}

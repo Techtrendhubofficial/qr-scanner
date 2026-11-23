@@ -1,39 +1,40 @@
 import React from 'react';
 import { TabType } from '../types';
-import { 
-  QrCode, 
-  Scan, 
-  Image as ImageIcon, 
-  PlusCircle, 
-  History as HistoryIcon, 
-  Crown, 
-  ShieldCheck, 
-  Smartphone,
-  ExternalLink
+import {
+  QrCode,
+  Scan,
+  Image as ImageIcon,
+  PlusCircle,
+  History as HistoryIcon,
+  Crown,
+  ShieldCheck,
+  Globe
 } from 'lucide-react';
+import { Language, translations } from '../utils/i18n';
 
 interface NavbarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
-  openAuditModal: () => void;
-  openPlayStoreModal: () => void;
   openVipModal: () => void;
   isVip: boolean;
+  lang: Language;
+  toggleLang: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
-  openAuditModal,
-  openPlayStoreModal,
   openVipModal,
   isVip,
+  lang,
+  toggleLang,
 }) => {
+  const t = translations[lang];
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-[#090d16]/95 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between gap-2">
         {/* Brand Logo */}
-        <div 
+        <div
           onClick={() => setActiveTab('scan')}
           className="flex items-center gap-2 cursor-pointer select-none shrink-0"
         >
@@ -47,11 +48,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="font-bold text-sm sm:text-base tracking-tight text-white">
                 Pavilion QR Pro
               </span>
-              <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${
-                isVip 
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' 
-                  : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
-              }`}>
+              <span
+                className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full border ${
+                  isVip
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                    : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                }`}
+              >
                 {isVip ? 'VIP' : 'PRO'}
               </span>
             </div>
@@ -72,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <Scan className="w-4 h-4" />
-            <span>极速扫码</span>
+            <span>{t.scanTab}</span>
           </button>
 
           <button
@@ -84,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <ImageIcon className="w-4 h-4" />
-            <span>相册识别</span>
+            <span>{t.albumTab}</span>
           </button>
 
           <button
@@ -96,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <PlusCircle className="w-4 h-4" />
-            <span>制作二维码</span>
+            <span>{t.generateTab}</span>
           </button>
 
           <button
@@ -108,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <HistoryIcon className="w-4 h-4" />
-            <span>历史与导出</span>
+            <span>{t.historyTab}</span>
           </button>
 
           <button
@@ -120,37 +123,39 @@ export const Navbar: React.FC<NavbarProps> = ({
             }`}
           >
             <Crown className="w-4 h-4 text-amber-400" />
-            <span>会员配套</span>
+            <span>{t.vipTab}</span>
           </button>
         </nav>
 
         {/* Action Buttons Right Side */}
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Play Store上架 */}
+          {/* Language Switcher (English / 中文) */}
           <button
-            onClick={openPlayStoreModal}
-            className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium text-slate-300 bg-slate-800/70 hover:bg-slate-700/80 border border-slate-700/60 transition-colors"
-            title="Google Play 商店上架指导"
+            onClick={toggleLang}
+            className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 transition-all shadow-md shadow-emerald-500/20 active:scale-95 cursor-pointer shrink-0"
+            title="Switch Language / 切换语言 (English / 中文)"
           >
-            <Smartphone className="w-3.5 h-3.5 text-blue-400" />
-            <span className="hidden xs:inline sm:inline">Play 商店</span>
+            <Globe className="w-3.5 h-3.5 text-white" />
+            <span>{lang === 'en' ? '中文' : 'English'}</span>
           </button>
 
-          {/* 零留存报告 (Audited PDPA Shield) */}
-          <button
-            onClick={openAuditModal}
-            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-600/40 transition-colors shadow-sm"
+          {/* Privacy Policy Link */}
+          <a
+            href="/privacy.html"
+            target="_blank"
+            rel="noreferrer"
+            className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium text-slate-300 bg-slate-800/70 hover:bg-slate-700/80 border border-slate-700/60 transition-colors"
+            title={lang === 'en' ? 'Privacy Policy (Zero Data Retention)' : '隐私政策（本地零留存）'}
           >
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-            <span className="truncate max-w-[80px] xs:max-w-none">零留存报告</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse hidden xs:inline-block"></span>
-          </button>
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span className="hidden sm:inline">{lang === 'en' ? 'Privacy' : '隐私声明'}</span>
+          </a>
 
           {/* VIP Badge button for mobile */}
           <button
             onClick={openVipModal}
             className="md:hidden flex items-center justify-center w-8 h-8 rounded-lg bg-amber-500/15 border border-amber-500/30 text-amber-300 hover:bg-amber-500/25 transition-colors"
-            title="会员服务"
+            title={lang === 'en' ? 'Pro Features' : '会员服务'}
           >
             <Crown className="w-4 h-4 text-amber-400" />
           </button>

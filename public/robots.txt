@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Disallow nothing - allow all search crawlers (Googlebot, Bingbot, etc.)
+Disallow:
+
+Sitemap: https://shop.pavilionventure.com/sitemap.xml

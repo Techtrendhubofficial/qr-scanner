@@ -1,113 +1,168 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
   <channel>
-    <title>Pavilion Venture Official Store (US / USD)</title>
+    <title>Pavilion Venture Official Store</title>
     <link>https://shop.pavilionventure.com</link>
-    <description>Fashion Apparel, Tech Gadgets, Dual Display Watches &amp; Lifestyle Accessories - Tracked US Delivery</description>
-
+    <description>Authorized Retailer for Tech Gadgets, Fashion Apparel, Watches and Lifestyle Accessories</description>
+    
+    <!-- Item 1: Hotel Camera Detection Wireless Signal Detector -->
     <item>
-      <g:id>PV-US-DETECTOR-CAMERA-01</g:id>
+      <g:id>PV-DETECTOR-CAMERA-01</g:id>
       <g:title><![CDATA[Hotel Camera Detection Privacy Positioning Monitoring Wireless Signal Detector]]></g:title>
-      <g:description><![CDATA[High precision wireless RF signal detector for hotel camera detection, anti-spy monitoring, privacy and GPS tracking locator protection. Portable handheld design with long battery life.]]></g:description>
+      <g:description><![CDATA[High precision wireless RF signal detector for hotel camera detection, anti-spy monitoring, privacy and GPS tracking locator protection. Portable handheld design.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYK4kAB2-Y</g:link>
       <g:image_link>https://oss-cf.cjdropshipping.com/product/2024/12/04/08/df70d3f5-5e5e-434f-ba9d-8229f04d2925_trans.jpeg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>30.07 USD</g:price>
+      <g:price>135.00 MYR</g:price>
       <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Electronics &gt; Security &amp; Surveillance &gt; Surveillance Detectors</g:google_product_category>
       <g:shipping_weight>0.35 kg</g:shipping_weight>
     </item>
 
+    <!-- Item 2: Women's Yoga Vest Halter Tank-top -->
     <item>
-      <g:id>PV-US-YOGA-VEST-HALTER-02</g:id>
+      <g:id>PV-YOGA-VEST-HALTER-02</g:id>
       <g:title><![CDATA[Women's Yoga Vest Halter Beautiful Back Tank-top]]></g:title>
       <g:description><![CDATA[Premium breathable women's halter yoga vest with cross beautiful back design, comfortable sports workout fitness athletic tank top.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYbwDpP28Y</g:link>
       <g:image_link>https://cf.cjdropshipping.com/quick/product/003a8c75-de1c-47a9-a976-18fdfaeabe97.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>19.56 USD</g:price>
+      <g:price>88.00 MYR</g:price>
       <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Activewear &gt; Athletic Tops</g:google_product_category>
       <g:shipping_weight>0.25 kg</g:shipping_weight>
     </item>
 
+    <!-- Item 3: Dr.exlee Outdoor Whitening Sunscreen Lotion SPF50 -->
     <item>
-      <g:id>PV-US-YOGA-BRA-PADS-03</g:id>
-      <g:title><![CDATA[Yoga Tank Top With Removable Chest Pads Shockproof Sports Bra]]></g:title>
-      <g:description><![CDATA[High-intensity workout fitness athletic tank top with removable padding, shockproof chest support, and quick-drying moisture wicking fabric.]]></g:description>
-      <g:link>https://shop.pavilionventure.com/s/2GYbwEuLZUr</g:link>
-      <g:image_link>https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/dbbec30e-fd78-4042-86af-dde2b2446f84.jpg</g:image_link>
+      <g:id>PV-DREXLEE-SUNSCREEN-03</g:id>
+      <g:title><![CDATA[Dr.exlee Outdoor Whitening Sunscreen Lotion SPF50 PA+++ (Thin & Light)]]></g:title>
+      <g:description><![CDATA[Broad-spectrum SPF50 PA+++ outdoor whitening sunscreen lotion with non-greasy breathable finish. Protects skin against UV rays and photo-aging.]]></g:description>
+      <g:link>https://shop.pavilionventure.com/product/drexlee-outdoor-whitening-sunscreen-spf50</g:link>
+      <g:image_link>https://qr.pavilionventure.com/images/products/item3-drexlee-sunscreen.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>14.50 USD</g:price>
-      <g:brand>Pavilion Venture</g:brand>
+      <g:price>158.00 MYR</g:price>
+      <g:brand>Dr.exlee</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
-      <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Activewear &gt; Sports Bras</g:google_product_category>
+      <g:google_product_category>Health &amp; Beauty &gt; Personal Care &gt; Cosmetics &gt; Skin Care &gt; Sunscreen</g:google_product_category>
       <g:shipping_weight>0.25 kg</g:shipping_weight>
     </item>
 
+    <!-- Item 4: European American Style Burgundy Sexy Suspender Skirt -->
     <item>
-      <g:id>PV-US-DRESS-BURGUNDY-SLIP-04</g:id>
+      <g:id>PV-DRESS-BURGUNDY-SLIP-04</g:id>
       <g:title><![CDATA[European &amp; American Style Burgundy Sexy Suspender Slip Skirt Dress]]></g:title>
       <g:description><![CDATA[Cross-border European and American style women's clothing new fashion versatile hot girl style burgundy sexy bodycon suspender slip dress.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYbwFfE1c8</g:link>
       <g:image_link>https://cj-product-center.oss-accelerate.aliyuncs.com/supplier/1688/db5130b2-6eae-435e-a19c-f8bb93620605.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>43.54 USD</g:price>
+      <g:price>195.00 MYR</g:price>
       <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Dresses</g:google_product_category>
       <g:shipping_weight>0.40 kg</g:shipping_weight>
     </item>
 
+    <!-- Item 5: POEDAGAR Multifunction Dual Display Luminous Watch -->
     <item>
-      <g:id>PV-US-WATCH-POEDAGAR-05</g:id>
+      <g:id>PV-WATCH-POEDAGAR-05</g:id>
       <g:title><![CDATA[POEDAGAR Multifunction Dual Display Luminous Quartz Men's Watch]]></g:title>
       <g:description><![CDATA[POEDAGAR luxury multifunction analog and digital dual display watch with luminous hands, waterproof stainless steel strap, stopwatch and alarm calendar.]]></g:description>
       <g:link>https://shop.pavilionventure.com/product/poedagar-dual-display-watch</g:link>
       <g:image_link>https://timeelegance.com.bd/cdn/shop/files/web_1_9e67c706-d41a-48de-9432-3685c4792625.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>29.90 USD</g:price>
+      <g:price>129.00 MYR</g:price>
       <g:brand>POEDAGAR</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Apparel &amp; Accessories &gt; Jewelry &gt; Watches</g:google_product_category>
       <g:shipping_weight>0.35 kg</g:shipping_weight>
     </item>
 
+    <!-- Item 6: Plus Velvet Thick Korean Loose Top -->
     <item>
-      <g:id>PV-US-TOP-KOREAN-FLEECE-06</g:id>
+      <g:id>PV-TOP-KOREAN-FLEECE-06</g:id>
       <g:title><![CDATA[Plus Velvet Thick Fashion All-Match Korean Loose Top Sweatshirt]]></g:title>
       <g:description><![CDATA[Warm winter fleece-lined velvet thick all-match Korean style loose crewneck pullover sweatshirt for casual comfortable daily wear.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYb+DqXAwv</g:link>
       <g:image_link>https://cf.cjdropshipping.com/68d4f222-7418-428a-b279-662163c19499.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>6.99 USD</g:price>
+      <g:price>31.00 MYR</g:price>
       <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Shirts &amp; Tops</g:google_product_category>
       <g:shipping_weight>0.45 kg</g:shipping_weight>
     </item>
 
+    <!-- Item 7: 3 Batteries Pro Drone 4K Foldable RC Quadcopter -->
     <item>
-      <g:id>PV-US-DRESS-FRENCH-ASYM-09</g:id>
+      <g:id>PV-DRONE-4K-PRO-07</g:id>
+      <g:title><![CDATA[3 Batteries Pro Drone 4K Selfie Camera Wifi Fpv Foldable Rc Quadcopter]]></g:title>
+      <g:description><![CDATA[Professional 4K dual camera foldable aerial drone with 3 high-capacity batteries, real-time WiFi FPV transmission, optical flow hover, and obstacle avoidance.]]></g:description>
+      <g:link>https://shop.pavilionventure.com/s/2GYijCx23gC</g:link>
+      <g:image_link>https://cf.cjdropshipping.com/38719179-6fbd-4822-8b8c-cf3aad912581.jpg</g:image_link>
+      <g:condition>new</g:condition>
+      <g:availability>in_stock</g:availability>
+      <g:price>745.00 MYR</g:price>
+      <g:brand>Pavilion Venture</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:google_product_category>Electronics &gt; Drones</g:google_product_category>
+      <g:shipping_weight>0.85 kg</g:shipping_weight>
+    </item>
+
+    <!-- Item 8: 2-in-1 Ceramic Hair Straightener & Curler -->
+    <item>
+      <g:id>PV-HAIR-STRAIGHTENER-08</g:id>
+      <g:title><![CDATA[2-in-1 Ceramic Coating Cordless Portable Hair Straightener & Curler]]></g:title>
+      <g:description><![CDATA[Rechargeable travel-friendly ceramic tourmaline 2-in-1 flat iron straightener and curler with 3 smart temperature levels and negative ion frizz control.]]></g:description>
+      <g:link>https://shop.pavilionventure.com/s/VoU72Cf1</g:link>
+      <g:image_link>https://qr.pavilionventure.com/images/products/item8-hair-straightener.jpg</g:image_link>
+      <g:condition>new</g:condition>
+      <g:availability>in_stock</g:availability>
+      <g:price>128.00 MYR</g:price>
+      <g:brand>Pavilion Venture</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:google_product_category>Health &amp; Beauty &gt; Personal Care &gt; Hair Care &gt; Hair Styling Tools &gt; Hair Irons</g:google_product_category>
+      <g:shipping_weight>0.35 kg</g:shipping_weight>
+    </item>
+
+    <!-- Item 9: Women's French-style Asymmetrical One-shoulder Dress -->
+    <item>
+      <g:id>PV-DRESS-FRENCH-ASYM-09</g:id>
       <g:title><![CDATA[Women's French-Style Asymmetrical One-Shoulder Vacation Casual Dress]]></g:title>
       <g:description><![CDATA[Chic French-inspired irregular one-shoulder solid color A-line dress with flattering drape. Ideal for vacations, parties and stylish streetwear.]]></g:description>
       <g:link>https://shop.pavilionventure.com/s/2GYbw7C7QTM</g:link>
       <g:image_link>https://cf.cjdropshipping.com/quick/product/2be89b01-404d-4276-9058-f1ad1e9c54d5.jpg</g:image_link>
       <g:condition>new</g:condition>
       <g:availability>in_stock</g:availability>
-      <g:price>16.49 USD</g:price>
+      <g:price>74.00 MYR</g:price>
       <g:brand>Pavilion Venture</g:brand>
       <g:identifier_exists>no</g:identifier_exists>
       <g:google_product_category>Apparel &amp; Accessories &gt; Clothing &gt; Dresses</g:google_product_category>
       <g:shipping_weight>0.35 kg</g:shipping_weight>
+    </item>
+
+    <!-- Item 10: Electric Negative Pressure Guasha & Cupping Massager -->
+    <item>
+      <g:id>PV-GUASHA-CUPPING-10</g:id>
+      <g:title><![CDATA[Electric Negative Pressure Guasha & Cupping Meridian Beauty Instrument]]></g:title>
+      <g:description><![CDATA[Smart negative pressure electric scraping, cupping, and thermal red light meridian relaxation massager for face, neck, back and body contouring.]]></g:description>
+      <g:link>https://shop.pavilionventure.com/s/iOBFbykH</g:link>
+      <g:image_link>https://qr.pavilionventure.com/images/products/item10-guasha-cupping.jpg</g:image_link>
+      <g:condition>new</g:condition>
+      <g:availability>in_stock</g:availability>
+      <g:price>120.00 MYR</g:price>
+      <g:brand>Pavilion Venture</g:brand>
+      <g:identifier_exists>no</g:identifier_exists>
+      <g:google_product_category>Health &amp; Beauty &gt; Personal Care &gt; Massage &amp; Relaxation &gt; Massagers</g:google_product_category>
+      <g:shipping_weight>0.40 kg</g:shipping_weight>
     </item>
 
   </channel>

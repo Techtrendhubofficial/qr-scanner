@@ -16,15 +16,19 @@ import {
   CheckCircle2
 } from 'lucide-react';
 import { ScanItem } from '../types';
+import { Language, translations } from '../utils/i18n';
 
 interface ScannerProps {
   onScanResult: (result: ScanItem) => void;
   onOpenAlbum: () => void;
+  lang?: Language;
 }
 
-export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) => {
+export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum, lang = 'en' }) => {
+  const t = translations[lang];
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
 
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [errorMessage, setErrorMessage] = useState<string>('');
@@ -98,7 +102,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
     } catch (err: unknown) {
       console.error('Camera error:', err);
       setHasPermission(false);
-      setErrorMessage('无法访问后置摄像头，请在浏览器权限设置中允许“相机”权限。');
+      setErrorMessage('camera_denied');
     }
   };
 
@@ -255,7 +259,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                 : 'text-slate-300 hover:text-white'
             }`}
           >
-            QR / 条码扫码
+            {t.scanQrMode}
           </button>
           <button
             onClick={() => {
@@ -268,7 +272,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                 : 'text-slate-300 hover:text-white'
             }`}
           >
-            OCR 拍照识字
+            {t.scanOcrMode}
           </button>
         </div>
       </div>
@@ -290,7 +294,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
 
         {/* Viewfinder helper text */}
         <div className="absolute -bottom-8 text-center text-xs text-slate-300 font-medium drop-shadow bg-black/40 px-3 py-1 rounded-full border border-slate-700/50 backdrop-blur-sm">
-          将二维码 / 条码放入框内，即可毫秒自动识别
+          {t.scanHint}
         </div>
       </div>
 
@@ -299,21 +303,21 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
         <div className="relative z-20 m-4 p-4 rounded-xl bg-red-950/90 border border-red-500/50 text-white max-w-md text-xs sm:text-sm space-y-2 backdrop-blur-md">
           <div className="flex items-center gap-2 font-bold text-red-300">
             <AlertCircle className="w-5 h-5 text-red-400 shrink-0" />
-            <span>相机权限受限</span>
+            <span>{t.cameraPermissionTitle}</span>
           </div>
-          <p className="text-slate-200">{errorMessage}</p>
+          <p className="text-slate-200">{errorMessage === 'camera_denied' || !errorMessage ? t.cameraError : errorMessage}</p>
           <div className="pt-2 flex gap-2">
             <button
               onClick={startCamera}
               className="px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-semibold text-xs"
             >
-              重新请求授权
+              {t.retryPermission}
             </button>
             <button
               onClick={onOpenAlbum}
               className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs"
             >
-              改用相册选图
+              {t.useAlbum}
             </button>
           </div>
         </div>
@@ -332,7 +336,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                   ? 'bg-amber-500 text-slate-950 shadow-md shadow-amber-500/20'
                   : 'bg-slate-800/80 text-slate-300 hover:text-white'
               }`}
-              title="手电筒补光"
+              title={torchOn ? t.torchOn : t.torchOff}
             >
               {torchOn ? <Flashlight className="w-5 h-5" /> : <FlashlightOff className="w-5 h-5" />}
             </button>
@@ -346,7 +350,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                 : 'bg-slate-800/80 text-slate-400'
             }`}
-            title={soundEnabled ? '提示音已开启' : '提示音已关闭'}
+            title={soundEnabled ? t.soundEnabled : t.soundDisabled}
           >
             {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
           </button>
@@ -359,16 +363,16 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                 ? 'bg-emerald-500 text-slate-950 font-bold'
                 : 'bg-slate-800/80 text-slate-300 hover:text-white'
             }`}
-            title="连续扫码模式（无需关闭弹窗自动识别）"
+            title={t.continuousTooltip}
           >
-            连续扫码: {continuousScan ? '开' : '关'}
+            {continuousScan ? t.continuousOn : t.continuousOff}
           </button>
 
           {/* Flip camera */}
           <button
             onClick={switchCamera}
             className="p-2.5 rounded-xl bg-slate-800/80 text-slate-300 hover:text-white transition-all"
-            title="切换前后摄像头"
+            title={t.switchCamera}
           >
             <RefreshCw className="w-5 h-5" />
           </button>
@@ -377,7 +381,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
           <button
             onClick={onOpenAlbum}
             className="p-2.5 rounded-xl bg-emerald-600/30 text-emerald-300 hover:bg-emerald-600/40 border border-emerald-500/30 transition-all flex items-center gap-1"
-            title="从相册识别二维码"
+            title={t.useAlbum}
           >
             <ImageIcon className="w-5 h-5" />
           </button>
@@ -391,7 +395,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs sm:text-sm">
                 <CheckCircle2 className="w-4 h-4" />
-                <span>识别成功</span>
+                <span>{t.scanSuccess}</span>
                 <span className="text-[10px] uppercase px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">
                   {scannedItem.category}
                 </span>
@@ -400,7 +404,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                 onClick={resumeScanning}
                 className="text-xs text-slate-400 hover:text-white bg-slate-800 px-2.5 py-1 rounded-md"
               >
-                继续扫码
+                {t.resumeScan}
               </button>
             </div>
 
@@ -417,7 +421,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                   className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors"
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span>打开网址</span>
+                  <span>{t.openUrl}</span>
                 </a>
               )}
               <button
@@ -425,7 +429,7 @@ export const Scanner: React.FC<ScannerProps> = ({ onScanResult, onOpenAlbum }) =
                 className="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 font-semibold text-xs border border-slate-700 transition-colors"
               >
                 {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copied ? '已复制！' : '复制内容'}</span>
+                <span>{copied ? t.copied : t.copyText}</span>
               </button>
             </div>
           </div>
