@@ -3,19 +3,8 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "rewrites": [
-    { "source": "/.well-known/assetlinks.json", "destination": "/.well-known/assetlinks.json" },
-    { "source": "/privacy.html", "destination": "/privacy.html" },
-    { "source": "/return-policy.html", "destination": "/return-policy.html" },
-    { "source": "/return-policy", "destination": "/return-policy.html" },
-    { "source": "/google-merchant.xml", "destination": "/google-merchant.xml" },
-    { "source": "/google-merchant-us.xml", "destination": "/google-merchant-us.xml" },
-    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
-    { "source": "/robots.txt", "destination": "/robots.txt" },
-    { "source": "/images/(.*)", "destination": "/images/$1" },
-    { "source": "/assets/(.*)", "destination": "/assets/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
-
   "headers": [
     {
       "source": "/.well-known/assetlinks.json",
@@ -37,4 +26,3 @@
     }
   ]
 }
-
