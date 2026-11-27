@@ -1,0 +1,4 @@
+
+SHA-256 指纹（Google Play App Signing / App Links）:
+Text
+22:5C:54:65:8F:7C:95:F7:A9:8F:8F:8B:E5:63:EA:89:97:9A:EC:3B:12:8F:74:2C:0D:F7:31:99:42:54:EF:FE

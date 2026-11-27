@@ -1012,7 +1012,7 @@ export const NexusNotepad: React.FC = () => {
               <div 
                 className="prose prose-invert prose-emerald max-w-none text-slate-200 leading-relaxed overflow-y-auto"
                 dangerouslySetInnerHTML={{
-                  __html: marked.parse(editorContent || '*当前笔记暂无内容，请在编辑模式输入...*'),
+                  __html: marked.parse(editorContent || '*当前笔记暂无内容，请在编辑模式输入...*', { async: false }) as string,
                 }}
               />
             ) : (
@@ -1178,7 +1178,7 @@ export const NexusNotepad: React.FC = () => {
                 <div
                   className="prose prose-invert prose-purple text-xs leading-relaxed max-w-none bg-slate-900/80 p-3 rounded-xl border border-slate-800"
                   dangerouslySetInnerHTML={{
-                    __html: marked.parse(aiResponse),
+                    __html: marked.parse(aiResponse, { async: false }) as string,
                   }}
                 />
 

@@ -8,6 +8,7 @@ import { History } from './components/History';
 import { VipModal } from './components/VipModal';
 import { TabType, ScanItem, GeneratedQrItem } from './types';
 import { Language } from './utils/i18n';
+import { OfflineIndicator } from './components/OfflineIndicator';
 
 export const App: React.FC = () => {
   // Language State (Defaults to English 'en' for Google Play and global users, with easy toggle to Chinese)
@@ -155,6 +156,9 @@ export const App: React.FC = () => {
         setIsVip={handleSetVip}
         lang={lang}
       />
+
+      {/* Offline Status Indicator */}
+      <OfflineIndicator lang={lang} />
     </div>
   );
 };

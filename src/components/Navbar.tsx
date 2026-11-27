@@ -11,6 +11,7 @@ import {
   Globe
 } from 'lucide-react';
 import { Language, translations } from '../utils/i18n';
+import { PWAInstallButton } from './PWAInstallButton';
 
 interface NavbarProps {
   activeTab: TabType;
@@ -129,6 +130,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action Buttons Right Side */}
         <div className="flex items-center gap-1.5 sm:gap-2">
+          <PWAInstallButton lang={lang} />
+
           {/* Language Switcher (English / 中文) */}
           <button
             onClick={toggleLang}
